@@ -1,0 +1,13 @@
+div(data-role="header", data-position="fixed", data-id='header')
+    a#btnBack(href="#", data-icon="back", data-iconpos="notext") Back
+    h1 Next View
+div(data-role="content")
+    ul(data-role="listview")
+        <% for(var i = 0; i < list.length; i++) { %>
+        li
+            a(href="#")
+                h2.ui-li-heading <%= list[i].name %>
+                p.ui-li-aside.ui-li-desc <%= list[i].begin %>
+                p.ui-li-desc <%= list[i].description %>
+                p.ui-li-desc <%= list[i].distance %> miles
+        <% } %>
