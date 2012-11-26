@@ -1,5 +1,5 @@
-define(['underscore', 'Backbone', 'text!/create.tpl'],
-    function (_, Backbone, NextTPL) {
+define(['underscore', 'Backbone', 'jqv', 'text!/create.tpl'],
+    function (_, Backbone, jqv, NextTPL) {
 
         var NextJS = Backbone.View.extend({
 

@@ -1,33 +1,28 @@
-define(['jquery', 'underscore', 'Backbone', 'views/create', 'text!/home.tpl'],
-    function ($, _, Backbone, Create, HomeTPL) {
+define(['jquery', 'underscore', 'Backbone', 'views/create', 'text!/home.tpl', 'views/schedule', 'views/browse'],
+    function ($, _, Backbone, Create, HomeTPL, Schedule, Browse) {
         var HomeView = Backbone.View.extend({
 
             events:{
+                'click #btnSchedule':'btnSchedule_clickHandler',
                 'click #btnCreate':'btnCreate_clickHandler',
-                'click #btnNearBy':'btnNearBy_clickHandler',
                 'click #btnBrowse':'btnBrowse_clickHandler',
-                'click #btnInstant':'btnInstant_clickHandler'
             },
 
             render:function () {
-                this.$el.html(_.template(HomeTPL, {title: 'Home View'}));
+                this.$el.html(_.template(HomeTPL, {}));
                 return this;
+            },
+
+            btnSchedule_clickHandler:function (event) {
+                $.mobile.jqmNavigator.pushView(new Schedule);
             },
 
             btnCreate_clickHandler:function (event) {
                 $.mobile.jqmNavigator.pushView(new Create);
             },
 
-            btnNearBy_clickHandler:function (event) {
-                $.mobile.jqmNavigator.pushView(new NearBy);
-            },
-
             btnBrowse_clickHandler:function (event) {
                 $.mobile.jqmNavigator.pushView(new Browse);
-            },
-
-            btnInstant_clickHandler:function (event) {
-                $.mobile.jqmNavigator.pushView(new Instant);
             }
 
         });

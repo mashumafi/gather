@@ -6,6 +6,7 @@ html
         link(rel="stylesheet", href="scripts/libs/jquery.mobile/jquery.mobile-1.2.0.css")
         link(rel="stylesheet", type="text/css", href="css/style.css", media="all")
         script(type="text/javascript", src="scripts/libs/cordova/cordova-ios-2.1.0.js")
+        script= ("var user = " + (loggedIn ? 'true' : 'false') + ';')
         script(data-main="scripts/main", src="scripts/libs/require/require.js")
     body
         #container

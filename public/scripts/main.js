@@ -13,7 +13,8 @@ require.config({
         // jQuery Mobile framework
         jqm:'libs/jquery.mobile/jquery.mobile-1.2.0',
         // jQuery Mobile plugin for Backbone views navigation
-        jqmNavigator:'libs/jquery.mobile/jqmNavigator'
+        jqmNavigator:'libs/jquery.mobile/jqmNavigator',
+        jqv: 'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.7/jquery.validate.min'
     },
     shim:{
         Backbone:{
@@ -25,12 +26,15 @@ require.config({
         },
         jqm:{
             deps:['jquery', 'jqmNavigator']
+        },
+        jqv:{
+            deps:['jquery']
         }
     }
 });
 
-require(['domReady', 'views/login', 'jqm'],
-    function (domReady, LoginView) {
+require(['domReady', 'views/login', 'views/home', 'jqm'],
+    function (domReady, LoginView, HomeView) {
 
         // domReady is RequireJS plugin that triggers when DOM is ready
         domReady(function () {
@@ -48,7 +52,11 @@ require(['domReady', 'views/login', 'jqm'],
                 $.mobile.defaultPageTransition = 'slide';
 
                 // Pushing MainView
-                $.mobile.jqmNavigator.pushView(new LoginView());
+                if(user) {
+                    $.mobile.jqmNavigator.pushView(new HomeView());
+                } else {
+                    $.mobile.jqmNavigator.pushView(new LoginView());
+                }
             }
 
             if (navigator.userAgent.match(/(iPad|iPhone|Android)/)) {

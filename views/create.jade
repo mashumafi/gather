@@ -1,13 +1,44 @@
 div(data-role="header", data-position="fixed", data-id='header')
     a#btnBack(href="#", data-icon="back", data-iconpos="notext") Back
-    h1 Next View
+    h1 Create
 div(data-role="content")
-    ul(data-role="listview")
-        <% for(var i = 0; i < list.length; i++) { %>
-        li
-            a(href="#")
-                h2.ui-li-heading <%= list[i].name %>
-                p.ui-li-aside.ui-li-desc <%= list[i].begin %>
-                p.ui-li-desc <%= list[i].description %>
-                p.ui-li-desc <%= list[i].distance %> miles
-        <% } %>
+    form#frmActivityCreate
+        label(for="name") Name
+        input#name(name="name")
+        label(for="description") Description
+        input#description(name="description")
+        label(for="begindate") Begin Date
+        input#begindate(type="date", name="begindate")
+        label(for="begintime") Begin Time
+        input#begindate(type="time", name="begintime")
+        label(for="enddate") End Date
+        input#enddate(type="date", name="enddate")
+        label(for="endtime") End Time
+        input#enddate(type="time", name="endtime")
+        label(for="locaton") Location
+        input#enddate(name="locaton")
+        button#btnUseCurrentGPS Use current position
+        button#btnCreate Create
+script
+    $('#btnCreate').click(function() {
+        var create = setTimeout(function() {
+            // after 1 second the server timedout
+        }, 1000);
+        $.ajax({
+            url: 'create',
+            data: $('#frmActivityCreate').serialize(),
+            success: function(data) {
+
+                clearTimeout(create);
+
+                if(data.err) {
+                    displayError(data.err);
+                } else {
+                    // The activity is created
+                }
+            },
+            error: function() {
+            }
+        });
+        return false;
+    });

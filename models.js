@@ -7,25 +7,32 @@ var mongoose = require("mongoose"),
 var db = mongoose.createConnection("mongodb://" + argv.dbuser + ":" + argv.dbpass + "@" + argv.dbserver + ":" + argv.dbport + "/" + argv.dbname + "", {});
 var UserSchema = Schema({
     type: String,
+    username: String,
     facebook: {
         id: {
             type: Number,
-            index: true
+            index: true,
+            unique: true
         },
-        email: String,
         accessToken: String,
         expires: Date,
-        name: {
-            first: String,
-            last: String
-        },
+        name: String,
         username: String,
-        gender: String,
         timezone: Number,
         locale: String
     },
     twitter: {
-        
+        id: {
+            type: Number,
+            index: true,
+            unique: true
+        },
+        accessToken: String,
+        accessTokenSecret: String,
+        name: String,
+        username: String,
+        timezone: Number,
+        locale: String
     }
 }), User;
 

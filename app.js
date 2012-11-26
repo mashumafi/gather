@@ -4,6 +4,7 @@ var express = require('express'),
     api = require('./routes/api'),
     http = require('http'),
     path = require('path'),
+    argv = require("optimist").argv,
     models = require('./models'),
     User = models.User;
 
@@ -12,11 +13,10 @@ var everyauth = require('everyauth');
 everyauth.debug = false;
 
 everyauth.everymodule.findUserById(function(userId, callback) {
-    console.log('Finding user: ', userId);
     User.findOne()
         .where('_id')
         .equals(userId)
-        .select('type')
+        .select('type,username')
         .exec(function(err, user) {
             callback(err, user)
         });
@@ -25,27 +25,23 @@ everyauth.everymodule.findUserById(function(userId, callback) {
 everyauth.facebook
     .appId('412557932149131')
     .appSecret('10d819d5f82a3d136727113eec695880')
-    .myHostname('http://gather.mashumafi.c9.io')
+    .myHostname(argv.hostname)
     .mobile(true)
     .handleAuthCallbackError(function (req, res) {
     })
-    .findOrCreateUser(function (session, accessToken, accessTokExtra, fbUserMetadata) {
+    .findOrCreateUser(function (session, accessToken, accessTokExtra, fbUserMetadata, server) {
         var promise = this.Promise();
-        User.update({'facebook.id':fbUserMetadata.id}, {$set: {
+        User.update(server.req.loggedIn ? {'_id':server.req.user._id} : {'facebook.id':fbUserMetadata.id}, {$set: {
             type: 'facebook',
+            username: fbUserMetadata.username || fbUserMetadata.name,
             facebook: {
                 id: fbUserMetadata.id,
-                email: fbUserMetadata.email,
                 accessToken: accessToken,
                 expires: new Date((new Date()).valueOf() + parseInt(accessTokExtra.expires)*1000),
-                gender: fbUserMetadata.gender,
                 timezone: fbUserMetadata.timezone,
                 locale: fbUserMetadata.locale,
                 username: fbUserMetadata.username,
-                name: {
-                    first: fbUserMetadata.first_name,
-                    last: fbUserMetadata.last_name
-                }
+                name: fbUserMetadata.name
             }
         }}, {upsert: true}, function() {
             User.findOne()
@@ -58,31 +54,32 @@ everyauth.facebook
         });
         return promise;
     })
-    .fields('id,gender,timezone,locale,first_name,last_name,username,email')
-    .scope('email')
+    .fields('id,timezone,locale,name,username')
     .redirectPath('/');
 
 everyauth.twitter
+    .myHostname(argv.hostname)
+    .callbackPath('/auth/twitter/callback')
     .consumerKey('1BWKvr2LaycbWrNRBGQleg')
     .consumerSecret('9k07pTLzvjPG20Oc4t6DN0ptm2qmCL0KVtPXKrrWm0')
-    .findOrCreateUser( function (session, accessToken, accessTokenSecret, twitterUserMetadata) {
+    .findOrCreateUser(function (session, accessToken, accessTokenSecret, twitterUserMetadata, server) {
         var promise = this.Promise();
-        User.update({'twitter.id':twitterUserMetadata.id}, {$set: {
+        User.update(server.req.loggedIn ? {'_id':server.req.user._id} : {'twitter.id':twitterUserMetadata.id}, {$set: {
+            username: twitterUserMetadata.screen_name || twitterUserMetadata.name,
             type: 'twitter',
-            facebook: {
+            twitter: {
                 id: twitterUserMetadata.id,
-                email: fbUserMetadata.email,
                 accessToken: accessToken,
-                expires: new Date((new Date()).valueOf() + parseInt(accessTokExtra.expires)*1000),
-                timezone: fbUserMetadata.timezone,
-                locale: fbUserMetadata.locale,
-                username: twitterUserMetadata.screen_name,
-                name: twitterUserMetadata.name
+                accessTokenSecret: accessTokenSecret,
+                timezone: twitterUserMetadata.utc_offset / 60 / 60,
+                locale: twitterUserMetadata.lang,
+                name: twitterUserMetadata.name,
+                username: twitterUserMetadata.screen_name
             }
         }}, {upsert: true}, function() {
             User.findOne()
-                .where('facebook.id')
-                .equals(fbUserMetadata.id)
+                .where('twitter.id')
+                .equals(twitterUserMetadata.id)
                 .select('_id')
                 .exec(function(err, user) {
                     promise.fulfill(user);
@@ -115,10 +112,8 @@ app.configure('development', function() {
 });
 
 app.get('/', function(req, res) {
-    if(req.loggedIn)
-        console.log(req.user);
     res.render('index', {
-        title: 'Login'
+        loggedIn: req.loggedIn
     });
 });
 app.get('/api/join/:id', api);
@@ -130,6 +125,12 @@ app.get('/create.tpl', function(req, res) {
 });
 app.get('/login.tpl', function(req, res) {
     res.render('login');
+});
+app.get('/schedule.tpl', function(req, res) {
+    res.render('schedule');
+});
+app.get('/browse.tpl', function(req, res) {
+    res.render('browse');
 });
 
 http.createServer(app).listen(app.get('port'), function() {
