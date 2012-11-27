@@ -12,6 +12,9 @@ var everyauth = require('everyauth');
 
 everyauth.debug = false;
 
+console.log(argv);
+//
+
 everyauth.everymodule.findUserById(function(userId, callback) {
     User.findOne()
         .where('_id')
@@ -23,8 +26,8 @@ everyauth.everymodule.findUserById(function(userId, callback) {
 });
 
 everyauth.facebook
-    .appId('412557932149131')
-    .appSecret('10d819d5f82a3d136727113eec695880')
+    .appId(argv.fbid)
+    .appSecret(argv.fbsecret)
     .myHostname(argv.hostname)
     .mobile(true)
     .handleAuthCallbackError(function (req, res) {
@@ -60,8 +63,8 @@ everyauth.facebook
 everyauth.twitter
     .myHostname(argv.hostname)
     .callbackPath('/auth/twitter/callback')
-    .consumerKey('1BWKvr2LaycbWrNRBGQleg')
-    .consumerSecret('9k07pTLzvjPG20Oc4t6DN0ptm2qmCL0KVtPXKrrWm0')
+    .consumerKey(argv.twitkey)
+    .consumerSecret(argv.twitsecret)
     .findOrCreateUser(function (session, accessToken, accessTokenSecret, twitterUserMetadata, server) {
         var promise = this.Promise();
         User.update(server.req.loggedIn ? {'_id':server.req.user._id} : {'twitter.id':twitterUserMetadata.id}, {$set: {
