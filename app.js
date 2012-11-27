@@ -10,9 +10,7 @@ var express = require('express'),
 
 var everyauth = require('everyauth');
 
-everyauth.debug = true;
-
-console.log(argv);
+everyauth.debug = false;
 
 everyauth.everymodule.findUserById(function(userId, callback) {
     User.findOne()
