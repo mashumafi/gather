@@ -18,7 +18,7 @@ define(['underscore', 'Backbone', 'text!/login.tpl', 'views/home'],
             },
             
             btnLoginTwitter_clickHandler: function() {
-                window.location = "http://gather.mashumafi.c9.io/auth/twitter";
+                window.location = "auth/twitter";
             }
 
         });
