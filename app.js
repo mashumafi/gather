@@ -10,7 +10,7 @@ var express = require('express'),
 
 var everyauth = require('everyauth');
 
-everyauth.debug = false;
+everyauth.debug = true;
 
 console.log(argv);
 
