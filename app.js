@@ -13,7 +13,6 @@ var everyauth = require('everyauth');
 everyauth.debug = false;
 
 console.log(argv);
-//
 
 everyauth.everymodule.findUserById(function(userId, callback) {
     User.findOne()
