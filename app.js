@@ -123,6 +123,9 @@ app.get('/home.tpl', function(req, res) {
 app.get('/create.tpl', function(req, res) {
     res.render('create');
 });
+app.post('/create', function(req, res) {
+    res.send(req.body);
+});
 app.get('/login.tpl', function(req, res) {
     res.render('login');
 });

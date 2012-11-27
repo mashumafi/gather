@@ -33,12 +33,11 @@ require.config({
     }
 });
 
-require(['domReady', 'views/login', 'views/home', 'jqm'],
+require(['domReady', 'views/login', 'views/home', 'jqm', 'jqv'],
     function (domReady, LoginView, HomeView) {
 
         // domReady is RequireJS plugin that triggers when DOM is ready
         domReady(function () {
-
             function onDeviceReady(desktop) {
                 // Hiding splash screen when app is loaded
                 if (desktop !== true)
