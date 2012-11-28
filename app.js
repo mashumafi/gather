@@ -21,6 +21,9 @@ everyauth.everymodule.findUserById(function(userId, callback) {
             callback(err, user)
         });
 });
+everyauth.everymodule.logoutPath('/logout');
+everyauth.everymodule.logoutRedirectPath('/');
+
 
 everyauth.facebook
     .appId(argv.fbid)
@@ -123,8 +126,22 @@ app.get('/home.tpl', function(req, res) {
 app.get('/create.tpl', function(req, res) {
     res.render('create');
 });
+
+// yyyy/mm/dd
+var isdate = /^(([0-9]{4})-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1])))$/;
+// hh:mm
+var istime = /^((([0-1][0-9])|(2[0-3]))(:([0-5][0-9])))$/;
+// lat, long
+var isgps = /^(-?[1-8]?\d(?:\.\d{1,6})?|90(?:\.0{1,6})?),(-?(?:1[0-7]|[1-9])?\d(?:\.\d{1,6})?|180(?:\.0{1,6})?)$/;
 app.post('/create', function(req, res) {
-    res.send(req.body);
+    // TODO Create the activity
+    if(isdate.test(req.body.begindate) && isdate.test(req.body.enddate) && istime.test(req.body.begintime) && istime.test(req.body.endtime)) {
+        var beginDate = Date.parse(req.body.begindate + ' ' + req.body.begintime);
+        var endDate = Date.parse(req.body.enddate + ' ' + req.body.endtime);
+        res.send(req.body);
+    } else {
+        res.send(null);
+    }
 });
 app.get('/login.tpl', function(req, res) {
     res.render('login');

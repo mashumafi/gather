@@ -1,0 +1,4 @@
+{"ts":1352140074852,"silentsave":true,"restoring":false,"patch":[[]],"length":0}
+{"contributors":[],"silentsave":false,"ts":1352140078911,"patch":[[{"diffs":[[1,"var models = require('./models')"]],"start1":0,"start2":0,"length1":0,"length2":32}]],"length":32,"saved":false}
+{"ts":1352140080916,"patch":[[{"diffs":[[0,"models')"],[1,";"]],"start1":24,"start2":24,"length1":8,"length2":9}]],"length":33,"saved":false}
+{"contributors":[],"silentsave":false,"ts":1352140430700,"patch":[[{"diffs":[[0,"quire('."],[1,"."],[0,"/models'"]],"start1":15,"start2":15,"length1":16,"length2":17}]],"length":34,"saved":false}

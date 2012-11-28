@@ -1,5 +1,5 @@
 div(data-role="header", data-position="fixed", data-id='header')
-    a#btnBack(href="#", data-icon="back", data-iconpos="notext") Back
+    a#btnBack(href="#", data-icon="delete") Cancel
     h1 Create
 div(data-role="content")
     form#frmActivityCreate
@@ -21,8 +21,8 @@ div(data-role="content")
         label(for="endtime") End Time
         input#endtime(type="time", name="endtime")
 
-        label(for="locaton") Location
-        input#locaton(name="locaton")
+        label(for="location") Location
+        input#location(name="location")
         button#btnUseCurrentGPS Use current position
 
-        button#btnCreate Create
+        input(type='submit', value='Create')

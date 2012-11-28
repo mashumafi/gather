@@ -5,4 +5,8 @@ div(data-role="content")
     button#btnCreate Create
     button#btnBrowse Browse
 div(data-role="footer", data-position="fixed", data-id='footer')
-    button(data-inline="true") Settings
+    button#btnToggleSettings(data-inline="true") Settings
+    #settings
+        button#btnAuthFacebook() Link Facebook
+        button#btnAuthTwitter() Link Twitter
+        button#btnLogout() Logout
