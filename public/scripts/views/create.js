@@ -9,18 +9,6 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
 
             render:function () {
                 this.$el.html(_.template(NextTPL));
-                var istime = /^((([0-1][0-9])|(2[0-3]))(:([0-5][0-9])))$/;
-                var isdate = /^(([0-9]{4})-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1])))$/;
-                var isgps = /^(-?[1-8]?\d(?:\.\d{1,6})?|90(?:\.0{1,6})?),(-?(?:1[0-7]|[1-9])?\d(?:\.\d{1,6})?|180(?:\.0{1,6})?)$/;
-                jQuery.validator.addMethod("time", function(value, element) { 
-                    return this.optional(element) || istime.test(value); 
-                }, "Please use the following format: 'hh:mm' where hh is 00-23 and mm is 00-59");
-                jQuery.validator.addMethod("day", function(value, element) { 
-                    return this.optional(element) || isdate.test(value); 
-                }, "Please use the following format: yyyy-mm-dd where yyyy is 0000-9999, mm is 01-12 and dd 01-31");
-                jQuery.validator.addMethod("gps", function(value, element) { 
-                    return this.optional(element) || isgps.test(value); 
-                }, "Please use the following format: ddd.dddddd, dd.dddddd (-180.000000,-90.000000)-(180.000000,90.000000)");
                 $("#frmActivityCreate").validate({
             		rules: {
             			name: {
@@ -53,9 +41,17 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
             			}
             		},
             		submitHandler: function(form) {
+                        var data = {
+                            name: form.name.value,
+                            description: form.description.value,
+                            location: form.location.value,
+                            begin: new Date(form.begindate.value + ' ' + form.begintime.value),
+                            end: new Date(form.enddate.value + ' ' + form.endtime.value)
+                            
+                        };
             			$.ajax({
             				url: 'create',
-            				data: $(form).serialize(),
+            				data: data,
             				type: 'POST',
             				success: function(result) {
             					console.log(result);

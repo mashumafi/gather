@@ -33,9 +33,25 @@ var UserSchema = Schema({
         username: String,
         timezone: Number,
         locale: String
-    }
-}), User;
+    },
+    user_activities: [{type: ObjectId, ref: 'user_activities'}]
+});
 
-User = db.model('users', UserSchema);
+var ActivitySchema = Schema({
+    name: String,
+    description: String,
+    begin: Date,
+    end: Date,
+    location: {type: [Number], index: '2d'},
+    user_activities: [{type: ObjectId, ref: 'user_activities'}]
+});
 
-module.exports.User = User;
+var UserActivtiySchema = Schema({
+    activity: {type: ObjectId, ref: 'activities'},
+    user: {type: ObjectId, ref: 'users'},
+    owner: Boolean
+});
+
+module.exports.User = db.model('users', UserSchema);
+module.exports.Activity = db.model('activities', ActivitySchema);
+module.exports.UserActivties = db.model('user_activities', UserActivtiySchema);

@@ -38,6 +38,36 @@ require(['domReady', 'views/login', 'views/home', 'jqm', 'jqv'],
 
         // domReady is RequireJS plugin that triggers when DOM is ready
         domReady(function () {
+            var istime = /^((([0-1][0-9])|(2[0-3]))(:([0-5][0-9])))$/;
+            var isdate = /^(([0-9]{4})-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1])))$/;
+            //var isgps = /^(-?[1-8]?\d(?:\.\d{1,6})?|90(?:\.0{1,6})?),(-?(?:1[0-7]|[1-9])?\d(?:\.\d{1,6})?|180(?:\.0{1,6})?)$/;
+            var isgps = /^(-?(?:1[0-7]|[1-9])?\d(?:\.\d{1,6})?|180(?:\.0{1,6})?),(-?[1-8]?\d(?:\.\d{1,6})?|90(?:\.0{1,6})?)$/;
+            jQuery.validator.addMethod("time", function(value, element) { 
+                return this.optional(element) || istime.test(value); 
+            }, "Please use the following format: 'hh:mm' where hh is 00-23 and mm is 00-59");
+            jQuery.validator.addMethod("day", function(value, element) { 
+                return this.optional(element) || isdate.test(value); 
+            }, "Please use the following format: yyyy-mm-dd where yyyy is 0000-9999, mm is 01-12 and dd 01-31");
+            jQuery.validator.addMethod("gps", function(value, element) { 
+                return this.optional(element) || isgps.test(value); 
+            }, "Please use the following format: ddd.dddddd,dd.dddddd (-90.000000,-180.000000)-(90.000000,180.000000)");
+            Date.prototype.timespan = function(now) {
+                var span = Math.round((new Date(this) - (now || new Date))/60/60)/1000;
+                if(span < 1) {
+                    // minutes
+                    span = (span*60) + " minutes"
+                } else if(span < 24) {
+                    // hours
+                    span = (span) + " hours"
+                } else if(span < 24*7) {
+                    //days
+                    span = (span) + " days"
+                } else if(span < 24*30) {
+                    // weeks
+                    span = (span) + " weeks"
+                }
+                return span;
+            }
             function onDeviceReady(desktop) {
                 // Hiding splash screen when app is loaded
                 if (desktop !== true)

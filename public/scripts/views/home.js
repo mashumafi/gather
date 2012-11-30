@@ -19,7 +19,18 @@ define(['jquery', 'underscore', 'Backbone', 'views/create', 'text!/home.tpl', 'v
             },
 
             btnSchedule_clickHandler:function (event) {
-                $.mobile.jqmNavigator.pushView(new Schedule);
+                var data = {
+                    now: new Date
+                };
+                $.ajax({
+                    url: 'schedule',
+                    data: data,
+                    type: 'POST',
+                    success: function(res) {
+                        data.activities = res;
+                        $.mobile.jqmNavigator.pushView(new Schedule(data));
+                    }
+                });
             },
 
             btnCreate_clickHandler:function (event) {
@@ -27,7 +38,23 @@ define(['jquery', 'underscore', 'Backbone', 'views/create', 'text!/home.tpl', 'v
             },
 
             btnBrowse_clickHandler:function (event) {
-                $.mobile.jqmNavigator.pushView(new Browse);
+                // TODO: make this a setting
+                var latest = new Date(new Date().getTime() + 1000*60*60); // 1 hour
+                var data = {
+                    latest: latest,
+                    now: new Date
+                };
+                $.ajax({
+                    url: 'browse',
+                    data: data,
+                    type: 'POST',
+                    success: function(res) {
+                        data.activities = res;
+                        data.date = latest.getFullYear() + '-' + latest.getMonth() + '-' + latest.getDate();
+                        data.time = latest.getHours() + ':' + ((latest.getMinutes()+'').length == 2 ? latest.getMinutes():'0'+latest.getMinutes());
+                        $.mobile.jqmNavigator.pushView(new Browse(data));
+                    }
+                });
             },
             
             btnToggleSettings_clickHandler: function(event) {

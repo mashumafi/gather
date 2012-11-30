@@ -1,5 +1,5 @@
-define(['underscore', 'Backbone', 'text!/create.tpl'],
-    function (_, Backbone, NextTPL) {
+define(['underscore', 'Backbone', 'text!/details.tpl'],
+    function (_, Backbone, DetailsTPL) {
 
         var NextJS = Backbone.View.extend({
 
@@ -8,8 +8,14 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
             },
 
             render:function () {
-                this.$el.html(_.template(NextTPL));
+                this.options.begin = new Date(this.options.begin);
+                this.options.end = new Date(this.options.end);
+                this.$el.html(_.template(DetailsTPL, this.options));
                 return this;
+            },
+
+            btnBack_clickHandler:function (event) {
+                $.mobile.jqmNavigator.popView();
             }
         });
 

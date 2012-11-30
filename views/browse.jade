@@ -2,14 +2,15 @@ div(data-role="header", data-position="fixed", data-id='header')
     a#btnBack(href="#", data-icon="back") Back
     h1 Browse
 div(data-role="content")
-    ul(data-role="listview")
-        <% for(var i = 0; i < list.length; i++) { %>
+    ul#listBrowse(data-role="listview")
+        <% for(var i = 0; i < activities.length; i++) { var activity = activities[i]; %>
         li
-            a(href="#")
-                h2.ui-li-heading <%= list[i].name %>
-                p.ui-li-aside.ui-li-desc <%= list[i].begin %>
-                p.ui-li-desc <%= list[i].description %>
-                p.ui-li-desc <%= list[i].distance %> miles
+            a.activity(href="#")
+                input(type="hidden", name="id", value!="<%= activity._id %>")
+                h2.ui-li-heading <%= activity.name %>
+                p.ui-li-aside.ui-li-desc <%= activity.begin %>
+                p.ui-li-desc <%= activity.description %>
+                p.ui-li-desc <%= activity.distance %> miles
         <% } %>
 div(data-role="footer", data-position="fixed", data-id='footer')
     button#btnToggleFilter(data-inline="true") Filter
@@ -24,7 +25,7 @@ div(data-role="footer", data-position="fixed", data-id='footer')
             input#maxDistance(type="number", name="maxDistance", value="10")
         div(data-role="fieldcontain")
             label(for="latestDate") Latest Date
-            input#latestDate(type="date", name="latestDate", value="")
+            input#latestDate(type="date", name="latestDate", value!='<%= date %>')
         div(data-role="fieldcontain")
             label(for="latestTime") Latest Time
-            input#latestTime(type="time", name="latestTime", value="")
+            input#latestTime(type="time", name="latestTime", value!='<%= time %>')
