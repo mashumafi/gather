@@ -181,19 +181,22 @@ app.post('update', function(req, res) {
         });
     
 });
-app.post('delete', function(req, res) {
+app.post('/delete', function(req, res) {
     UserActivity.findOne()
         .where('activity')
         .equals(req.body.id)
+        .populate('activity')
         .where('user')
         .equals(req.user._id)
-        .exec(function(err, res) {
-            if(res.owner) {
+        .exec(function(err, result) {
+            if(result.owner) {
                 UserActivity.find()
                     .where('activity')
                     .equals(req.body.id)
                     .remove(function(err, count) {
-                        res.send(null);
+                        result.activity.remove(function(err, result) {
+                            res.send(null);
+                        });
                     });
             }
         });
@@ -343,12 +346,6 @@ app.post('/join', function(req, res) {
                 res.send(user_activity);
             }
         });
-    } else {
-        res.send(null);
-    }
-});
-app.post('/delete', function(req, res) {
-    if(req.loggedIn) {
     } else {
         res.send(null);
     }

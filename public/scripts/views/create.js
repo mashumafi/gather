@@ -4,7 +4,9 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
         var NextJS = Backbone.View.extend({
 
             events:{
-                'click #btnBack':'btnBack_clickHandler'
+                'click #btnBack':'btnBack_clickHandler',
+                'click #btnDelete':'btnDelete_clickHandler',
+                'click #btnUpdate':'btnUpdate_clickHandler'
             },
 
             render:function () {
@@ -56,7 +58,7 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
             				success: function(result) {
             					console.log(result);
             					if(!result.error) {
-            						$.mobile.jqmNavigator.popView();
+            						$.mobile.jqmNavigator.popToFirst();
             					} else {
             						// display error
             					}
@@ -68,8 +70,29 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
                 return this;
             },
 
-            btnBack_clickHandler:function (event) {
+            btnBack_clickHandler: function (event) {
                 $.mobile.jqmNavigator.popView();
+            },
+            
+            btnDelete_clickHandler: function(event) {
+        		$.ajax({
+    				url: 'delete',
+    				data: {
+                        id: this.options._id
+                    },
+    				type: 'POST',
+    				success: function(result) {
+    					if(!result.error) {
+    						$.mobile.jqmNavigator.popToFirst();
+    					} else {
+    						// display error
+    					}
+    				}
+    			});
+            },
+            
+            btnUpdate_clickHandler: function(event) {
+                
             }
         });
 
