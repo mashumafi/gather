@@ -145,8 +145,8 @@ app.post('/create', function(req, res) {
                 name: req.body.name,
                 description: req.body.description,
                 location: location,
-                begin: new Date(req.body.begin),
-                end: new Date(req.body.end)
+                begin: req.body.begin,
+                end: req.body.end
             };
             Activity.create(doc, function(err, activity) {
                 if(err) {
@@ -168,15 +168,24 @@ app.post('/create', function(req, res) {
         res.send(null);
     }
 });
-app.post('update', function(req, res) {
+app.post('/update', function(req, res) {
     UserActivity.findOne()
         .where('activity')
         .equals(req.body.id)
+        .populate('activity')
         .where('user')
         .equals(req.user._id)
-        .exec(function(err, res) {
-            if(res.owner) {
-                
+        .exec(function(err, result) {
+            if(result.owner) {
+                var activity = result.activity;
+                activity.name = req.body.name;
+                activity.description = req.body.description;
+                activity.begin = req.body.begin;
+                activity.end = req.body.end;
+                activity.location = req.body.location.split(',');;
+                activity.save(function(err, result) {
+                    res.send(null);
+                });
             }
         });
     

@@ -5,11 +5,11 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
 
             events:{
                 'click #btnBack':'btnBack_clickHandler',
-                'click #btnDelete':'btnDelete_clickHandler',
-                'click #btnUpdate':'btnUpdate_clickHandler'
+                'click #btnDelete':'btnDelete_clickHandler'
             },
 
             render:function () {
+                var id = this.options._id;
                 this.$el.html(_.template(CreateTPL, this.options));
                 $("#frmActivityCreate").validate({
             		rules: {
@@ -44,15 +44,15 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
             		},
             		submitHandler: function(form) {
                         var data = {
+                            id: id,
                             name: form.name.value,
                             description: form.description.value,
                             location: form.location.value,
                             begin: new Date(form.begindate.value + ' ' + form.begintime.value),
                             end: new Date(form.enddate.value + ' ' + form.endtime.value)
-                            
                         };
             			$.ajax({
-            				url: 'create',
+            				url: id ? 'update' : 'create',
             				data: data,
             				type: 'POST',
             				success: function(result) {
@@ -89,10 +89,6 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
     					}
     				}
     			});
-            },
-            
-            btnUpdate_clickHandler: function(event) {
-                
             }
         });
 
