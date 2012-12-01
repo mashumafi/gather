@@ -291,6 +291,25 @@ app.post('/join', function(req, res) {
         res.send(null);
     }
 });
+app.post('/delete', function(req, res) {
+    if(req.loggedIn) {
+    } else {
+        res.send(null);
+    }
+});
+app.post('/unjoin', function(req, res) {
+    if(req.loggedIn) {
+        UserActivity.remove({user:req.user._id, activity: req.body.id, owner: false}, function(err, user_activity) {
+            if(err) {
+                // creation error
+            } else {
+                res.send(null);
+            }
+        });
+    } else {
+        res.send(null);
+    }
+});
 http.createServer(app).listen(app.get('port'), function() {
     console.log("Express server listening on port " + app.get('port'));
 });

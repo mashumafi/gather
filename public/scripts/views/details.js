@@ -5,7 +5,9 @@ define(['underscore', 'Backbone', 'text!/details.tpl'],
 
             events:{
                 'click #btnBack':'btnBack_clickHandler',
-                'click #btnJoin': 'btnJoin_clickHandler'
+                'click #btnJoin': 'btnJoin_clickHandler',
+                'click #btnDelete': 'btnDelete_clickHandler',
+                'click #btnUnJoin': 'btnUnJoin_clickHandler'
             },
 
             render:function () {
@@ -26,8 +28,34 @@ define(['underscore', 'Backbone', 'text!/details.tpl'],
                     type: 'POST',
                     data: {id: id},
                     success: function(res) {
-                        $.mobile.jqmNavigator.popView();
-                        $.mobile.jqmNavigator.popView();
+                        //$.mobile.jqmNavigator.popView();
+                        $.mobile.jqmNavigator.popToFirst();
+                    }
+                });
+            },
+            
+            btnDelete_clickHandler: function (event) {
+                var id = $('input[type=hidden]').val();
+                $.ajax({
+                    url: 'delete',
+                    type: 'POST',
+                    data: {id: id},
+                    success: function(res) {
+                        //$.mobile.jqmNavigator.popView();
+                        $.mobile.jqmNavigator.popToFirst();
+                    }
+                });
+            },
+            
+            btnUnJoin_clickHandler: function (event) {
+                var id = $('input[type=hidden]').val();
+                $.ajax({
+                    url: 'unjoin',
+                    type: 'POST',
+                    data: {id: id},
+                    success: function(res) {
+                        //$.mobile.jqmNavigator.popView();
+                        $.mobile.jqmNavigator.popToFirst();
                     }
                 });
             }
