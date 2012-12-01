@@ -9,7 +9,7 @@ var express = require('express'),
     models = require('./models'),
     User = models.User,
     Activity = models.Activity,
-    UserActivties = models.UserActivties;
+    UserActivty = models.UserActivty;
 
 var everyauth = require('everyauth');
 
@@ -40,6 +40,7 @@ everyauth.facebook
         User.update(server.req.loggedIn ? {'_id':server.req.user._id} : {'facebook.id':fbUserMetadata.id}, {$set: {
             type: 'facebook',
             username: fbUserMetadata.username || fbUserMetadata.name,
+            lastLogin: new Date,
             facebook: {
                 id: fbUserMetadata.id,
                 accessToken: accessToken,
@@ -73,6 +74,7 @@ everyauth.twitter
         User.update(server.req.loggedIn ? {'_id':server.req.user._id} : {'twitter.id':twitterUserMetadata.id}, {$set: {
             username: twitterUserMetadata.screen_name || twitterUserMetadata.name,
             type: 'twitter',
+            lastLogin: new Date,
             twitter: {
                 id: twitterUserMetadata.id,
                 accessToken: accessToken,
@@ -150,7 +152,7 @@ app.post('/create', function(req, res) {
                 if(err) {
                     // creation error
                 } else {
-                    UserActivties.create({user:req.user._id, activity: activity._id, owner: true}, function(err, user_activity) {
+                    UserActivty.create({user:req.user._id, activity: activity._id, owner: true}, function(err, user_activity) {
                         if(err) {
                             // creation error
                         } else {
@@ -176,7 +178,7 @@ app.post('/schedule', function(req, res) {
     if(req.loggedIn) {
         async.waterfall([
             function(callback) {
-                UserActivties.find()
+                UserActivty.find()
                     .select('-_id -user -__v')
                     .populate('activity', 'name description begin location', { begin: { $gt: new Date(req.body.now) } })
                     .where('user')
@@ -218,10 +220,10 @@ app.post('/browse', function(req, res) {
     }
     if(req.loggedIn) {
         Activity.find()
+            .select('-__v -user_activities')
             .where('begin')
             .gte(new Date(req.body.now))
             .lte(new Date(req.body.latest))
-            .select('-__v')
             .exec(function(err, activities) {
                 if(err) {
                     // something went wrong
@@ -239,9 +241,10 @@ app.get('/details.tpl', function(req, res) {
 app.post('/details', function(req, res) {
     if(req.loggedIn) {
         Activity.findOne()
+            .select('-__v')
             .where('_id')
             .equals(req.body.id)
-            .select('-__v -user_activities')
+            .populate('user_activities')
             .exec(function(err, result) {
                 res.send(result);
             });

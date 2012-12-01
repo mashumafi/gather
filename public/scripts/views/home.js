@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'Backbone', 'views/create', 'text!/home.tpl', 'views/schedule', 'views/browse'],
-    function ($, _, Backbone, Create, HomeTPL, Schedule, Browse) {
+define(['jquery', 'underscore', 'Backbone', 'D8', 'views/create', 'text!/home.tpl', 'views/schedule', 'views/browse'],
+    function ($, _, Backbone, D8, Create, HomeTPL, Schedule, Browse) {
         var HomeView = Backbone.View.extend({
 
             events:{
@@ -39,10 +39,11 @@ define(['jquery', 'underscore', 'Backbone', 'views/create', 'text!/home.tpl', 'v
 
             btnBrowse_clickHandler:function (event) {
                 // TODO: make this a setting
-                var latest = new Date(new Date().getTime() + 1000*60*60); // 1 hour
+                var latest = new D8().addHours(7)
                 var data = {
-                    latest: latest,
-                    now: new Date
+                    latest: latest.date,
+                    now: new Date,
+                    distance: 10
                 };
                 $.ajax({
                     url: 'browse',
@@ -50,8 +51,8 @@ define(['jquery', 'underscore', 'Backbone', 'views/create', 'text!/home.tpl', 'v
                     type: 'POST',
                     success: function(res) {
                         data.activities = res;
-                        data.date = latest.getFullYear() + '-' + latest.getMonth() + '-' + latest.getDate();
-                        data.time = latest.getHours() + ':' + ((latest.getMinutes()+'').length == 2 ? latest.getMinutes():'0'+latest.getMinutes());
+                        data.date = latest.format('yyyy-mm-dd');
+                        data.time = latest.format('HH:MM');
                         $.mobile.jqmNavigator.pushView(new Browse(data));
                     }
                 });

@@ -5,9 +5,10 @@ var mongoose = require("mongoose"),
     argv = require("optimist").argv;
 
 var db = mongoose.createConnection("mongodb://" + argv.dbuser + ":" + argv.dbpass + "@" + argv.dbserver + ":" + argv.dbport + "/" + argv.dbname + "", {});
-var UserSchema = Schema({
+var UserSchema = new Schema({
     type: String,
     username: String,
+    lastLogin: Date,
     facebook: {
         id: {
             type: Number,
@@ -37,7 +38,7 @@ var UserSchema = Schema({
     user_activities: [{type: ObjectId, ref: 'user_activities'}]
 });
 
-var ActivitySchema = Schema({
+var ActivitySchema = new Schema({
     name: String,
     description: String,
     begin: Date,
@@ -46,7 +47,7 @@ var ActivitySchema = Schema({
     user_activities: [{type: ObjectId, ref: 'user_activities'}]
 });
 
-var UserActivtiySchema = Schema({
+var UserActivtiySchema = new Schema({
     activity: {type: ObjectId, ref: 'activities'},
     user: {type: ObjectId, ref: 'users'},
     owner: Boolean
@@ -54,4 +55,4 @@ var UserActivtiySchema = Schema({
 
 module.exports.User = db.model('users', UserSchema);
 module.exports.Activity = db.model('activities', ActivitySchema);
-module.exports.UserActivties = db.model('user_activities', UserActivtiySchema);
+module.exports.UserActivty = db.model('user_activities', UserActivtiySchema);

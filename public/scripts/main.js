@@ -14,7 +14,8 @@ require.config({
         jqm:'libs/jquery.mobile/jquery.mobile-1.2.0',
         // jQuery Mobile plugin for Backbone views navigation
         jqmNavigator:'libs/jquery.mobile/jqmNavigator',
-        jqv: 'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.7/jquery.validate.min'
+        jqv: 'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.7/jquery.validate.min',
+        D8:'libs/d8',
     },
     shim:{
         Backbone:{
@@ -29,11 +30,14 @@ require.config({
         },
         jqv:{
             deps:['jquery']
+        },
+        D8:{
+            exports:'D8'
         }
     }
 });
 
-require(['domReady', 'views/login', 'views/home', 'jqm', 'jqv'],
+require(['domReady', 'views/login', 'views/home', 'jqm', 'jqv', 'D8'],
     function (domReady, LoginView, HomeView) {
 
         // domReady is RequireJS plugin that triggers when DOM is ready
@@ -52,21 +56,17 @@ require(['domReady', 'views/login', 'views/home', 'jqm', 'jqv'],
                 return this.optional(element) || isgps.test(value); 
             }, "Please use the following format: ddd.dddddd,dd.dddddd (-90.000000,-180.000000)-(90.000000,180.000000)");
             Date.prototype.timespan = function(now) {
-                var span = Math.round((new Date(this) - (now || new Date))/60/60)/1000;
-                if(span < 1) {
-                    // minutes
-                    span = (span*60) + " minutes"
-                } else if(span < 24) {
-                    // hours
-                    span = (span) + " hours"
-                } else if(span < 24*7) {
-                    //days
-                    span = (span) + " days"
-                } else if(span < 24*30) {
-                    // weeks
-                    span = (span) + " weeks"
+                var i = D8.create(now.getTime());
+                var f = D8.create(this.getTime());
+                if(i.timeBetween(f, 'days') > 1) {
+                    return i.timeBetween(f, 'days') + ' days';
+                } else if(i.timeBetween(f, 'hours') > 1) {
+                    return i.timeBetween(f, 'hours') + ' hours';
+                } else if(i.timeBetween(f, 'minutes') > 1) {
+                    return i.timeBetween(f, 'minutes') + ' minutes';
+                } else {
+                    return i.timeBetween(f, 'seconds') + ' seconds';
                 }
-                return span;
             }
             function onDeviceReady(desktop) {
                 // Hiding splash screen when app is loaded

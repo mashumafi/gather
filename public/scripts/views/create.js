@@ -56,7 +56,7 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
             				success: function(result) {
             					console.log(result);
             					if(!result.error) {
-            						// $.mobile.jqmNavigator.popView();
+            						$.mobile.jqmNavigator.popView();
             					} else {
             						// display error
             					}

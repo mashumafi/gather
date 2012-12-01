@@ -22,7 +22,7 @@ div(data-role="footer", data-position="fixed", data-id='footer')
             label(for="sortDistance") Distance
         div(data-role="fieldcontain")
             label(for="maxDistance") Max Distance (miles)
-            input#maxDistance(type="number", name="maxDistance", value="10")
+            input#maxDistance(type="number", name="maxDistance", value!="<%= distance %>")
         div(data-role="fieldcontain")
             label(for="latestDate") Latest Date
             input#latestDate(type="date", name="latestDate", value!='<%= date %>')

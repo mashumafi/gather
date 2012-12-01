@@ -15,6 +15,7 @@ define(['underscore', 'Backbone', 'text!/browse.tpl', 'views/details'],
                 for(var i = 0; i < activities.length; i++) {
                     var activity = activities[i];
                     activity.begin = new Date(activity.begin).timespan(now);
+                    activity.distance = Math.round(Math.sqrt(Math.pow(activity.location[0],2)+Math.pow(activity.location[1],2))*10)/10;
                 }
                 this.$el.html(_.template(BrowseTPL, this.options));
                 $('#filter').hide();
