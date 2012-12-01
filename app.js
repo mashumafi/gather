@@ -9,7 +9,7 @@ var express = require('express'),
     models = require('./models'),
     User = models.User,
     Activity = models.Activity,
-    UserActivty = models.UserActivty;
+    UserActivity = models.UserActivity;
 
 var everyauth = require('everyauth');
 
@@ -152,13 +152,13 @@ app.post('/create', function(req, res) {
                 if(err) {
                     // creation error
                 } else {
-                    UserActivty.create({user:req.user._id, activity: activity._id, owner: true}, function(err, user_activity) {
+                    UserActivity.create({user:req.user._id, activity: activity._id, owner: true}, function(err, user_activity) {
                         if(err) {
                             // creation error
                         } else {
                             res.send(activity);
                         }
-                    })
+                    });
                 }
             });
         } else {
@@ -178,7 +178,7 @@ app.post('/schedule', function(req, res) {
     if(req.loggedIn) {
         async.waterfall([
             function(callback) {
-                UserActivty.find()
+                UserActivity.find()
                     .select('-_id -user -__v')
                     .populate('activity', 'name description begin location', { begin: { $gt: new Date(req.body.now) } })
                     .where('user')
@@ -192,9 +192,14 @@ app.post('/schedule', function(req, res) {
                 });
             }, function(activities, callback) {
                 async.map(activities, function(item, callback) {
-                    item.activity.owner = item.owner;
-                    item = item.activity;
-                    callback(null, item);
+                    callback(null, {
+                        name: item.activity.name,
+                        description: item.activity.description,
+                        begin: item.activity.begin,
+                        _id: item.activity._id,
+                        location: item.activity.location,
+                        owner: item.owner
+                    });
                 }, callback);
             }
         ], function (err, result) {
@@ -240,20 +245,48 @@ app.get('/details.tpl', function(req, res) {
 });
 app.post('/details', function(req, res) {
     if(req.loggedIn) {
-        Activity.findOne()
-            .select('-__v')
-            .where('_id')
-            .equals(req.body.id)
-            .populate('user_activities')
-            .exec(function(err, result) {
-                res.send(result);
-            });
+        async.parallel({
+            activity: function(callback) {
+                Activity.findOne()
+                    .select('-__v -user_activities')
+                    .where('_id')
+                    .equals(req.body.id)
+                    .exec(callback);
+            }, user_activity: function(callback) {
+                UserActivity.findOne()
+                    .where('activity')
+                    .equals(req.body.id)
+                    .where('user')
+                    .equals(req.user._id)
+                    .exec(callback);
+            }
+        }, function(err, item) {
+            if(err) {
+                res.send(null);
+            }else {
+                res.send({
+                    name: item.activity.name,
+                    description: item.activity.description,
+                    begin: item.activity.begin,
+                    _id: item.activity._id,
+                    location: item.activity.location,
+                    owner: item.user_activity ? item.user_activity.owner : null
+                });
+            }
+        });
     } else {
         res.send(null);
     }
 });
-app.get('/join', function(req, res) {
+app.post('/join', function(req, res) {
     if(req.loggedIn) {
+        UserActivity.create({user:req.user._id, activity: req.body.id, owner: false}, function(err, user_activity) {
+            if(err) {
+                // creation error
+            } else {
+                res.send(user_activity);
+            }
+        });
     } else {
         res.send(null);
     }

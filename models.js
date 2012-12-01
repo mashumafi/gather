@@ -37,6 +37,7 @@ var UserSchema = new Schema({
     },
     user_activities: [{type: ObjectId, ref: 'user_activities'}]
 });
+module.exports.User = db.model('users', UserSchema);
 
 var ActivitySchema = new Schema({
     name: String,
@@ -46,13 +47,11 @@ var ActivitySchema = new Schema({
     location: {type: [Number], index: '2d'},
     user_activities: [{type: ObjectId, ref: 'user_activities'}]
 });
+module.exports.Activity = db.model('activities', ActivitySchema);
 
-var UserActivtiySchema = new Schema({
+var UserActivitySchema = new Schema({
     activity: {type: ObjectId, ref: 'activities'},
     user: {type: ObjectId, ref: 'users'},
     owner: Boolean
 });
-
-module.exports.User = db.model('users', UserSchema);
-module.exports.Activity = db.model('activities', ActivitySchema);
-module.exports.UserActivty = db.model('user_activities', UserActivtiySchema);
+module.exports.UserActivity = db.model('user_activities', UserActivitySchema);

@@ -4,7 +4,8 @@ define(['underscore', 'Backbone', 'text!/details.tpl'],
         var NextJS = Backbone.View.extend({
 
             events:{
-                'click #btnBack':'btnBack_clickHandler'
+                'click #btnBack':'btnBack_clickHandler',
+                'click #btnJoin': 'btnJoin_clickHandler'
             },
 
             render:function () {
@@ -14,8 +15,21 @@ define(['underscore', 'Backbone', 'text!/details.tpl'],
                 return this;
             },
 
-            btnBack_clickHandler:function (event) {
+            btnBack_clickHandler: function (event) {
                 $.mobile.jqmNavigator.popView();
+            },
+            
+            btnJoin_clickHandler: function (event) {
+                var id = $('input[type=hidden]').val();
+                $.ajax({
+                    url: 'join',
+                    type: 'POST',
+                    data: {id: id},
+                    success: function(res) {
+                        $.mobile.jqmNavigator.popView();
+                        $.mobile.jqmNavigator.popView();
+                    }
+                });
             }
         });
 
