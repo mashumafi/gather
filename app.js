@@ -259,18 +259,26 @@ app.post('/details', function(req, res) {
                     .where('user')
                     .equals(req.user._id)
                     .exec(callback);
+            }, owners: function(callback) {
+                UserActivity.find()
+                    .where('owner')
+                    .equals(true)
+                    .populate('user')
+                    .exec(callback);
             }
         }, function(err, item) {
             if(err) {
                 res.send(null);
             }else {
+                console.log(item);
                 res.send({
                     name: item.activity.name,
                     description: item.activity.description,
                     begin: item.activity.begin,
                     _id: item.activity._id,
                     location: item.activity.location,
-                    owner: item.user_activity ? item.user_activity.owner : null
+                    owner: item.user_activity ? item.user_activity.owner : null,
+                    owners: item.owners
                 });
             }
         });
