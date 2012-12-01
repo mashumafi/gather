@@ -168,6 +168,12 @@ app.post('/create', function(req, res) {
         res.send(null);
     }
 });
+app.post('update', function(req, res) {
+    
+});
+app.post('delete', function(req, res) {
+    
+});
 app.get('/login.tpl', function(req, res) {
     res.render('login');
 });

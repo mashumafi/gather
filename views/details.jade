@@ -2,7 +2,7 @@ div(data-role="header", data-position="fixed", data-id='header')
     a#btnBack(href="#", data-icon="back") Back
     h1 Details
     <% if(owner===true) { %>
-    a#btnDelete(href="#", data-icon="gear") Edit
+    a#btnEdit(href="#", data-icon="gear") Edit
     <% } else if(owner===false) { %>
     a#btnUnJoin(href="#", data-icon="minus") Unjoin
     <% } else if(owner===null) { %>

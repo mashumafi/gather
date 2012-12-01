@@ -12,13 +12,14 @@ Implemented
 *filter out activities you already joined
 *have filter work
 *default settings for the filter
+*list the creator of the activity (username only)
 
 Not implemented
 *sort by distance/time on client (for browse)
-*list the creator of the activity
 *delete activity (only if creator) [this will be at the bottom of the edit page]
 *edit an activity (name, desc, etc.) (only if creator) [this can use create page, change create button at bottom to red delete and update button at top right]
 *store defaults for distance/delay
+*have distance/time update if you move or time passes (browse/schedule)
 
 Josh/Noah
 *style (4 styles, first 2 for entire app (right now its grey/blue) last 2 for errors(red)/warning(yellow))

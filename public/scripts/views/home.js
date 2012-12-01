@@ -45,7 +45,8 @@ define(['jquery', 'underscore', 'Backbone', 'D8', 'views/create', 'text!/home.tp
                     begintime: now.format('HH:MM'),
                     enddate: later.format('yyyy-mm-dd'),
                     endtime: later.format('HH:MM'),
-                    location: ''
+                    location: '',
+                    isNew: true
                 }));
             },
 
