@@ -1,5 +1,5 @@
 define(['underscore', 'Backbone', 'text!/create.tpl'],
-    function (_, Backbone, NextTPL) {
+    function (_, Backbone, CreateTPL) {
 
         var NextJS = Backbone.View.extend({
 
@@ -8,7 +8,7 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
             },
 
             render:function () {
-                this.$el.html(_.template(NextTPL));
+                this.$el.html(_.template(CreateTPL, this.options));
                 $("#frmActivityCreate").validate({
             		rules: {
             			name: {

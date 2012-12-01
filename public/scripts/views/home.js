@@ -34,11 +34,22 @@ define(['jquery', 'underscore', 'Backbone', 'D8', 'views/create', 'text!/home.tp
             },
 
             btnCreate_clickHandler:function (event) {
-                $.mobile.jqmNavigator.pushView(new Create);
+                var defaults = document.getElementById('browseDefaults');
+                var now = new D8();
+                var later = now.addHours(defaults.hoursDelay.value);
+                $.mobile.jqmNavigator.pushView(new Create({
+                    _id: null,
+                    name: '',
+                    description: '',
+                    begindate: now.format('yyyy-mm-dd'),
+                    begintime: now.format('HH:MM'),
+                    enddate: later.format('yyyy-mm-dd'),
+                    endtime: later.format('HH:MM'),
+                    location: ''
+                }));
             },
 
             btnBrowse_clickHandler:function (event) {
-                // TODO: make this a setting
                 var defaults = document.getElementById('browseDefaults');
                 var latest = new D8().addHours(parseFloat(defaults.hoursDelay.value));
                 var data = {

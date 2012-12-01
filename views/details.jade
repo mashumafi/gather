@@ -24,7 +24,10 @@ div(data-role="content")
         p <%= end %>
     div(data-role="collapsible", data-inset="false")
         h3 Owners
-        p Not implemented
+        p
+            <% for(var i = 0; i < owners.length; i++) { %>
+            p <%= owners[i].user.username %>
+            <% } %>
     div(data-role="collapsible", data-inset="false", data-collapsed="false")
         h3 Map
         p <%= location %>

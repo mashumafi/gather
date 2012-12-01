@@ -4,25 +4,25 @@ div(data-role="header", data-position="fixed", data-id='header')
 div(data-role="content")
     form#frmActivityCreate
         label(for="name") Name
-        input#name(name="name", value='name')
+        input#name(name="name", value!='<%= name %>')
 
         label(for="description") Description
-        input#description(name="description", value='desc')
+        input#description(name="description", value!='<%= description %>')
 
         label(for="begindate") Begin Date
-        input#begindate(type="date", name="begindate", value='1991-04-29')
+        input#begindate(type="date", name="begindate", value!='<%= begindate %>')
 
         label(for="begintime") Begin Time
-        input#begintime(type="time", name="begintime", value='01:01')
+        input#begintime(type="time", name="begintime", value!='<%= begintime %>')
 
         label(for="enddate") End Date
-        input#enddate(type="date", name="enddate", value='1991-04-29')
+        input#enddate(type="date", name="enddate", value!='<%= enddate %>')
 
         label(for="endtime") End Time
-        input#endtime(type="time", name="endtime", value='01:01')
+        input#endtime(type="time", name="endtime", value!='<%= endtime %>')
 
         label(for="location") Location
-        input#location(name="location", value='1,1')
+        input#location(name="location", value!='<%= location %>')
         button#btnUseCurrentGPS Use current position
 
         input(type='submit', value='Create')

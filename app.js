@@ -277,6 +277,8 @@ app.post('/details', function(req, res) {
             }, owners: function(callback) {
                 UserActivity.find()
                     .select('user -_id')
+                    .where('activity')
+                    .equals(req.body.id)
                     .where('owner')
                     .equals(true)
                     .populate('user', 'username')
@@ -290,6 +292,7 @@ app.post('/details', function(req, res) {
                     name: item.activity.name,
                     description: item.activity.description,
                     begin: item.activity.begin,
+                    end: item.activity.end,
                     _id: item.activity._id,
                     location: item.activity.location,
                     owner: item.user_activity ? item.user_activity.owner : null,
