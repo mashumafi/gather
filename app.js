@@ -169,10 +169,34 @@ app.post('/create', function(req, res) {
     }
 });
 app.post('update', function(req, res) {
+    UserActivity.findOne()
+        .where('activity')
+        .equals(req.body.id)
+        .where('user')
+        .equals(req.user._id)
+        .exec(function(err, res) {
+            if(res.owner) {
+                
+            }
+        });
     
 });
 app.post('delete', function(req, res) {
-    
+    UserActivity.findOne()
+        .where('activity')
+        .equals(req.body.id)
+        .where('user')
+        .equals(req.user._id)
+        .exec(function(err, res) {
+            if(res.owner) {
+                UserActivity.find()
+                    .where('activity')
+                    .equals(req.body.id)
+                    .remove(function(err, count) {
+                        res.send(null);
+                    });
+            }
+        });
 });
 app.get('/login.tpl', function(req, res) {
     res.render('login');
