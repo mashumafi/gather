@@ -39,11 +39,13 @@ define(['jquery', 'underscore', 'Backbone', 'D8', 'views/create', 'text!/home.tp
 
             btnBrowse_clickHandler:function (event) {
                 // TODO: make this a setting
-                var latest = new D8().addHours(7)
+                var defaults = document.getElementById('browseDefaults');
+                var latest = new D8().addHours(parseFloat(defaults.hoursDelay.value));
                 var data = {
                     latest: latest.date,
                     now: new Date,
-                    distance: 10
+                    distance: parseFloat(defaults.maxDistance.value),
+                    location: [0,0]
                 };
                 $.ajax({
                     url: 'browse',

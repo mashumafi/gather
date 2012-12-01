@@ -22,7 +22,7 @@ define(['underscore', 'Backbone', 'text!/details.tpl'],
             },
             
             btnJoin_clickHandler: function (event) {
-                var id = $('input[type=hidden]').val();
+                var id = this.options._id;
                 $.ajax({
                     url: 'join',
                     type: 'POST',
@@ -35,7 +35,7 @@ define(['underscore', 'Backbone', 'text!/details.tpl'],
             },
             
             btnDelete_clickHandler: function (event) {
-                var id = $('input[type=hidden]').val();
+                var id = this.options._id;
                 $.ajax({
                     url: 'delete',
                     type: 'POST',
@@ -48,7 +48,7 @@ define(['underscore', 'Backbone', 'text!/details.tpl'],
             },
             
             btnUnJoin_clickHandler: function (event) {
-                var id = $('input[type=hidden]').val();
+                var id = this.options._id;
                 $.ajax({
                     url: 'unjoin',
                     type: 'POST',

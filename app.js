@@ -213,29 +213,44 @@ app.post('/schedule', function(req, res) {
 app.get('/browse.tpl', function(req, res) {
     res.render('browse');
 });
+app.get('/browse_list.tpl', function(req, res) {
+    res.render('browse_list');
+});
 app.post('/browse', function(req, res) {
-    var sort = req.body.sort;
-    switch(sort) {
-        case 'distance':
-            sort='location';
-            break;
-        default:
-            sort='begin';
-            break;
-    }
     if(req.loggedIn) {
-        Activity.find()
-            .select('-__v -user_activities')
-            .where('begin')
-            .gte(new Date(req.body.now))
-            .lte(new Date(req.body.latest))
-            .exec(function(err, activities) {
-                if(err) {
-                    // something went wrong
-                } else {
-                    res.send(activities);
-                }
-            });
+        async.waterfall([
+            function(callback) {
+                UserActivity.find()
+                    .select('-_id -user -__v')
+                    .populate('activity', 'name description begin location', { begin: { $gt: new Date(req.body.now) }})
+                    .where('user')
+                    .equals(req.user._id)
+                    .exec(callback);
+            }, function(activities, callback) {
+                async.filter(activities, function(item, callback) {
+                    callback(item.activity)
+                }, function(results) {
+                    callback(null, results);
+                });
+            }, function(activities, callback) {
+                async.map(activities, function(item, callback) {
+                    callback(null, item.activity._id);
+                }, callback);
+            }, function(activities, callback) {
+                Activity.find({_id: {$nin: activities}, location: { $near: req.body.location, $maxDistance: req.body.distance }})
+                    .select('-__v -user_activities')
+                    .where('begin')
+                    .gte(new Date(req.body.now))
+                    .lte(new Date(req.body.latest))
+                    .exec(callback);
+            }
+        ], function (err, result) {
+            if(err) {
+                // something went wrong
+            } else {
+                res.send(result);
+            }
+        });
     } else {
         res.send('Error');
     }
@@ -261,16 +276,16 @@ app.post('/details', function(req, res) {
                     .exec(callback);
             }, owners: function(callback) {
                 UserActivity.find()
+                    .select('user -_id')
                     .where('owner')
                     .equals(true)
-                    .populate('user')
+                    .populate('user', 'username')
                     .exec(callback);
             }
         }, function(err, item) {
             if(err) {
                 res.send(null);
             }else {
-                console.log(item);
                 res.send({
                     name: item.activity.name,
                     description: item.activity.description,
@@ -309,7 +324,7 @@ app.post('/unjoin', function(req, res) {
     if(req.loggedIn) {
         UserActivity.remove({user:req.user._id, activity: req.body.id, owner: false}, function(err, user_activity) {
             if(err) {
-                // creation error
+                // remove error
             } else {
                 res.send(null);
             }

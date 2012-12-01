@@ -1,5 +1,5 @@
-define(['underscore', 'Backbone', 'text!/browse.tpl', 'views/details'],
-    function (_, Backbone, BrowseTPL, Details) {
+define(['underscore', 'Backbone', 'text!/browse.tpl', 'text!/browse_list.tpl', 'views/details'],
+    function (_, Backbone, BrowseTPL, BrowseListTPL, Details) {
 
         var NextJS = Backbone.View.extend({
 
@@ -27,7 +27,36 @@ define(['underscore', 'Backbone', 'text!/browse.tpl', 'views/details'],
             },
             
             btnToggleFilter_clickHandler: function(event) {
-                $('#filter').toggle('slow');
+                if($('#filter').is(":visible")) {
+                    var filter = document.getElementById('filter');
+                    var latest = new D8.create(filter.latestDate.value + ' ' + filter.latestTime.value);
+                    var data = {
+                        latest: latest.date,
+                        now: new Date,
+                        distance: parseFloat(filter.maxDistance.value),
+                        location: [0,0]
+                    };
+                    $.ajax({
+                        url: 'browse',
+                        data: data,
+                        type: 'POST',
+                        success: function(res) {
+                            data.activities = res;
+                            var now = data.now;
+                            var activities = data.activities;
+                            for(var i = 0; i < activities.length; i++) {
+                                var activity = activities[i];
+                                activity.begin = new Date(activity.begin).timespan(now);
+                                activity.distance = Math.round(Math.sqrt(Math.pow(activity.location[0],2)+Math.pow(activity.location[1],2))*10)/10;
+                            }
+                            $('#listBrowse').replaceWith(_.template(BrowseListTPL, data));
+                            $('#listBrowse').listview();
+                            $('#filter').toggle('slow');
+                        }
+                    });
+                } else {
+                    $('#filter').toggle('slow');
+                }
             },
 
             activityDetail_handler: function (event) {

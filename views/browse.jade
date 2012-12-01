@@ -2,19 +2,10 @@ div(data-role="header", data-position="fixed", data-id='header')
     a#btnBack(href="#", data-icon="back") Back
     h1 Browse
 div(data-role="content")
-    ul#listBrowse(data-role="listview")
-        <% for(var i = 0; i < activities.length; i++) { var activity = activities[i]; %>
-        li
-            a.activity(href="#")
-                input(type="hidden", name="id", value!="<%= activity._id %>")
-                h2.ui-li-heading <%= activity.name %>
-                p.ui-li-aside.ui-li-desc <%= activity.begin %>
-                p.ui-li-desc <%= activity.description %>
-                p.ui-li-desc <%= activity.distance %> miles
-        <% } %>
+    include browse_list
 div(data-role="footer", data-position="fixed", data-id='footer')
     button#btnToggleFilter(data-inline="true") Filter
-    #filter
+    form#filter
         fieldset#sortby(data-role="controlgroup", data-type="horizontal")
             input#sortTime(type="radio", name="sort", value="Time", checked="checked")
             label(for="sortTime") Time

@@ -1,0 +1,26 @@
+Implemented
+*join
+*unjoin (cannot unjoin if creator, only delete)
+*browse activities (uses static filter)
+*see list of activities you create/joined (ordered by starting time, earliest on top)
+*see detailed view of an activity (missing creator username)
+*login using facebook/twitter oauth
+*link more accounts together to allow you to login with many and see same thing
+*create activity
+
+Just Implemented
+*filter out activities you already joined
+*have filter work
+*default settings for the filter
+
+Not implemented
+*sort by distance/time on client (for browse)
+*list the creator of the activity
+*delete activity (only if creator) [this will be at the bottom of the edit page]
+*edit an activity (name, desc, etc.) (only if creator) [this can use create page, change create button at bottom to red delete and update button at top right]
+*store defaults for distance/delay
+
+Josh/Noah
+*style (3 styles, first 2 for theme last for errors/warning)
+*enter test data*
+*gps

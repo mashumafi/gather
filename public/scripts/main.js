@@ -44,7 +44,6 @@ require(['domReady', 'views/login', 'views/home', 'jqm', 'jqv', 'D8'],
         domReady(function () {
             var istime = /^((([0-1][0-9])|(2[0-3]))(:([0-5][0-9])))$/;
             var isdate = /^(([0-9]{4})-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1])))$/;
-            //var isgps = /^(-?[1-8]?\d(?:\.\d{1,6})?|90(?:\.0{1,6})?),(-?(?:1[0-7]|[1-9])?\d(?:\.\d{1,6})?|180(?:\.0{1,6})?)$/;
             var isgps = /^(-?(?:1[0-7]|[1-9])?\d(?:\.\d{1,6})?|180(?:\.0{1,6})?),(-?[1-8]?\d(?:\.\d{1,6})?|90(?:\.0{1,6})?)$/;
             jQuery.validator.addMethod("time", function(value, element) { 
                 return this.optional(element) || istime.test(value); 
