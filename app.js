@@ -222,7 +222,7 @@ app.post('/schedule', function(req, res) {
             function(callback) {
                 UserActivity.find()
                     .select('-_id -user -__v')
-                    .populate('activity', 'name description begin location', { begin: { $gt: new Date(req.body.now) } })
+                    .populate('activity', 'name description begin location end', { end: { $gt: new Date(req.body.now) } })
                     .where('user')
                     .equals(req.user._id)
                     .exec(callback);
@@ -238,6 +238,7 @@ app.post('/schedule', function(req, res) {
                         name: item.activity.name,
                         description: item.activity.description,
                         begin: item.activity.begin,
+                        end: item.activity.end,
                         _id: item.activity._id,
                         location: item.activity.location,
                         owner: item.owner
@@ -264,7 +265,7 @@ app.post('/browse', function(req, res) {
             function(callback) {
                 UserActivity.find()
                     .select('-_id -user -__v')
-                    .populate('activity', 'name description begin location', { begin: { $gt: new Date(req.body.now) }})
+                    .populate('activity', '_id', { end: { $gt: new Date(req.body.now) }})
                     .where('user')
                     .equals(req.user._id)
                     .exec(callback);
@@ -281,7 +282,7 @@ app.post('/browse', function(req, res) {
             }, function(activities, callback) {
                 Activity.find({_id: {$nin: activities}, location: { $near: req.body.location, $maxDistance: req.body.distance }})
                     .select('-__v -user_activities')
-                    .where('begin')
+                    .where('end')
                     .gte(new Date(req.body.now))
                     .lte(new Date(req.body.latest))
                     .exec(callback);

@@ -17,6 +17,7 @@ Implemented
 *edit an activity (name, desc, etc.) (only if creator) [this can use create page, change create button at bottom to update]
 *sort by time on schedule
 *sort by distance/time on client (for browse)
+*show activities that already started
 
 Not implemented
 *store defaults for distance/delay
@@ -25,6 +26,10 @@ Not implemented
 *disable buttons on ajax
 *index the database
 *show activities that already started but in a different color
+*show ativities that ended in your schedule
+*add rating system (show activities that ended and allow you to rate)
+*add categories
+*remove code duplication for browse/schedule
 
 Josh/Noah
 *style (4 styles, first 2 for entire app (right now its grey/blue) last 2 for errors(red)/warning(yellow))

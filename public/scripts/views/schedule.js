@@ -16,7 +16,15 @@ define(['underscore', 'Backbone', 'text!/schedule.tpl', 'views/details'],
                 });
                 for(var i = 0; i < activities.length; i++) {
                     var activity = activities[i];
-                    activity.begin = new Date(activity.begin).timespan(now);
+                    var begin = new Date(activity.begin);
+                    var end = new Date(activity.end);
+                    if(now > begin) {
+                        activity.began = true;
+                        activity.begin = 'Ends: ' + end.timespan(begin);
+                    } else {
+                        activity.began = false;
+                        activity.begin = 'Begins: ' + begin.timespan(now);
+                    }
                     activity.distance = Math.round(activity.location.distance()*10)/10;
                     (activity.owner ? owner : member).push(activity);
                 }

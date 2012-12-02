@@ -5,25 +5,27 @@ div(data-role="content")
     ul(data-role="listview")
         <% if(activities.owner.length > 0) { %>
         li(data-role="list-divider") Activities you created
-        <% for(var i = 0; i < activities.owner.length; i++) { var owner = activities.owner[i]; %>
-        li
-            a.activity(href="#")
-                input(type="hidden", name="id", value!="<%= owner._id %>")
-                h2.ui-li-heading <%= owner.name %>
-                p.ui-li-aside.ui-li-desc <%= owner.begin %>
-                p.ui-li-desc <%= owner.description %>
-                p.ui-li-desc <%= owner.distance %> miles
+        <% for(var i = 0; i < activities.owner.length; i++) { var activity = activities.owner[i]; %>
+        | <li <%= activity.began ? 'data-theme="e"' : '' %>>
+        a.activity(href="#")
+            input(type="hidden", name="id", value!="<%= activity._id %>")
+            h2.ui-li-heading <%= activity.name %>
+            p.ui-li-aside.ui-li-desc <%= activity.begin %>
+            p.ui-li-desc <%= activity.description %>
+            p.ui-li-desc <%= activity.distance %> miles
+        | </li>
         <% } %>
         <% } %>
         <% if(activities.member.length > 0) { %>
         li(data-role="list-divider") Activities you joined
-        <% for(var i = 0; i < activities.member.length; i++) { var member = activities.member[i]; %>
-        li
-            a.activity(href="#")
-                input(type="hidden", name="id", value!="<%= member._id %>")
-                h2.ui-li-heading <%= member.name %>
-                p.ui-li-aside.ui-li-desc <%= member.begin %>
-                p.ui-li-desc <%= member.description %>
-                p.ui-li-desc <%= member.distance %> miles
+        <% for(var i = 0; i < activities.member.length; i++) { var activity = activities.member[i]; %>
+        | <li <%= activity.began ? 'data-theme="e"' : '' %>>
+        a.activity(href="#")
+            input(type="hidden", name="id", value!="<%= activity._id %>")
+            h2.ui-li-heading <%= activity.name %>
+            p.ui-li-aside.ui-li-desc <%= activity.begin %>
+            p.ui-li-desc <%= activity.description %>
+            p.ui-li-desc <%= activity.distance %> miles
+        | </li>
         <% } %>
         <% } %>
