@@ -5,7 +5,8 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
 
             events:{
                 'click #btnBack':'btnBack_clickHandler',
-                'click #btnDelete':'btnDelete_clickHandler'
+                'click #btnDelete':'btnDelete_clickHandler',
+                'click #btnUseCurrentGPS': 'btnUseCurrentGPS_clickHandler'
             },
 
             render:function () {
@@ -89,6 +90,11 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
     					}
     				}
     			});
+            },
+            
+            btnUseCurrentGPS_clickHandler: function(event) {
+                $('input[name=location]').val('0,0');
+                return false;
             }
         });
 

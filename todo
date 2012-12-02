@@ -22,6 +22,9 @@ Not implemented
 *store defaults for distance/delay
 *have distance/time update if you move or time passes (browse/schedule)
 *paginate the browse page
+*disable buttons on ajax
+*index the database
+*show activities that already started but in a different color
 
 Josh/Noah
 *style (4 styles, first 2 for entire app (right now its grey/blue) last 2 for errors(red)/warning(yellow))
