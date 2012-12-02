@@ -49,8 +49,8 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
                             name: form.name.value,
                             description: form.description.value,
                             location: form.location.value,
-                            begin: D8.create(form.begindate.value + ' ' + form.begintime.value).date,
-                            end: D8.create(form.enddate.value + ' ' + form.endtime.value).date
+                            begin: new Date(form.begindate.value + ' ' + form.begintime.value + ':00'),
+                            end: new Date(form.enddate.value + ' ' + form.endtime.value + ':00')
                         };
             			$.ajax({
             				url: id ? 'update' : 'create',

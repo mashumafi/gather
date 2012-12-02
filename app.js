@@ -50,7 +50,7 @@ everyauth.facebook
                 username: fbUserMetadata.username,
                 name: fbUserMetadata.name
             }
-        }}, {upsert: true}, function() {
+        }}, {upsert: true}, function(err, result) {
             User.findOne()
                 .where('facebook.id')
                 .equals(fbUserMetadata.id)

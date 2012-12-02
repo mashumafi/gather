@@ -13,7 +13,7 @@ var UserSchema = new Schema({
         id: {
             type: Number,
             index: true,
-            unique: true
+            //unique: true
         },
         accessToken: String,
         expires: Date,
@@ -26,7 +26,7 @@ var UserSchema = new Schema({
         id: {
             type: Number,
             index: true,
-            unique: true
+            //unique: true
         },
         accessToken: String,
         accessTokenSecret: String,
