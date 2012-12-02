@@ -6,26 +6,40 @@ div(data-role="content")
         <% if(activities.owner.length > 0) { %>
         li(data-role="list-divider") Activities you created
         <% for(var i = 0; i < activities.owner.length; i++) { var activity = activities.owner[i]; %>
-        | <li <%= activity.began ? 'data-theme="e"' : '' %>>
-        a.activity(href="#")
-            input(type="hidden", name="id", value!="<%= activity._id %>")
-            h2.ui-li-heading <%= activity.name %>
-            p.ui-li-aside.ui-li-desc <%= activity.begin %>
-            p.ui-li-desc <%= activity.description %>
-            p.ui-li-desc <%= activity.distance %> miles
-        | </li>
+        li(data-theme!="<%= activity.began ? 'e' : 'c' %>")
+            a.activity(href="#")
+                input(type="hidden", name="id", value!="<%= activity._id %>")
+                h2.ui-li-heading <%= activity.name %>
+                p.ui-li-aside.ui-li-desc <%= activity.begin %>
+                p.ui-li-desc <%= activity.description %>
+                p.ui-li-desc <%= activity.distance %> miles
         <% } %>
         <% } %>
         <% if(activities.member.length > 0) { %>
         li(data-role="list-divider") Activities you joined
         <% for(var i = 0; i < activities.member.length; i++) { var activity = activities.member[i]; %>
-        | <li <%= activity.began ? 'data-theme="e"' : '' %>>
-        a.activity(href="#")
-            input(type="hidden", name="id", value!="<%= activity._id %>")
-            h2.ui-li-heading <%= activity.name %>
-            p.ui-li-aside.ui-li-desc <%= activity.begin %>
-            p.ui-li-desc <%= activity.description %>
-            p.ui-li-desc <%= activity.distance %> miles
-        | </li>
+        li(data-theme!="<%= activity.began ? 'e' : 'c' %>")
+            a.activity(href="#")
+                input(type="hidden", name="id", value!="<%= activity._id %>")
+                h2.ui-li-heading <%= activity.name %>
+                p.ui-li-aside.ui-li-desc <%= activity.begin %>
+                p.ui-li-desc <%= activity.description %>
+                p.ui-li-desc <%= activity.distance %> miles
+        <% } %>
+        <% } %>
+        <% if(activities.old.length > 0) { %>
+        li(data-role="list-divider") Activities that ended
+        <% for(var i = 0; i < activities.old.length; i++) { var activity = activities.old[i]; %>
+        li(data-theme='a')
+            a.activity(href="#")
+                input(type="hidden", name="id", value!="<%= activity._id %>")
+                h2.ui-li-heading <%= activity.name %>
+                p.ui-li-aside.ui-li-desc Ended
+                p.ui-li-desc <%= activity.description %>
+                p.ui-li-desc(data-rating!="<%= activity.rating %>")
+                    <% for(var j = 1; j <= 5; j++) { %>
+                    span
+                        img.rating(src!="<%= j <= activity.rating ? 'image/star-on.png' : 'image/star-off.png' %>", data-rating!="<%= j %>")
+                    <% } %>
         <% } %>
         <% } %>

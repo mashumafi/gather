@@ -52,6 +52,7 @@ module.exports.Activity = db.model('activities', ActivitySchema);
 var UserActivitySchema = new Schema({
     activity: {type: ObjectId, ref: 'activities'},
     user: {type: ObjectId, ref: 'users'},
-    owner: Boolean
+    owner: Boolean,
+    rating: Number
 });
 module.exports.UserActivity = db.model('user_activities', UserActivitySchema);

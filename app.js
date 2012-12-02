@@ -152,7 +152,7 @@ app.post('/create', function(req, res) {
                 if(err) {
                     // creation error
                 } else {
-                    UserActivity.create({user:req.user._id, activity: activity._id, owner: true}, function(err, user_activity) {
+                    UserActivity.create({user:req.user._id, activity: activity._id, owner: true, rating: 0}, function(err, user_activity) {
                         if(err) {
                             // creation error
                         } else {
@@ -222,7 +222,7 @@ app.post('/schedule', function(req, res) {
             function(callback) {
                 UserActivity.find()
                     .select('-_id -user -__v')
-                    .populate('activity', 'name description begin location end', { end: { $gt: new Date(req.body.now) } })
+                    .populate('activity', 'name description begin location end', { end: { $gt: new Date(new Date(req.body.now)-1000*60*60*24*7) } })
                     .where('user')
                     .equals(req.user._id)
                     .exec(callback);
@@ -241,7 +241,8 @@ app.post('/schedule', function(req, res) {
                         end: item.activity.end,
                         _id: item.activity._id,
                         location: item.activity.location,
-                        owner: item.owner
+                        owner: item.owner,
+                        rating: item.rating
                     });
                 }, callback);
             }
@@ -349,7 +350,7 @@ app.post('/details', function(req, res) {
 });
 app.post('/join', function(req, res) {
     if(req.loggedIn) {
-        UserActivity.create({user:req.user._id, activity: req.body.id, owner: false}, function(err, user_activity) {
+        UserActivity.create({user:req.user._id, activity: req.body.id, owner: false, rating: 0}, function(err, user_activity) {
             if(err) {
                 // creation error
             } else {
@@ -367,6 +368,26 @@ app.post('/unjoin', function(req, res) {
                 // remove error
             } else {
                 res.send(null);
+            }
+        });
+    } else {
+        res.send(null);
+    }
+});
+app.post('/rate', function(req, res) {
+    if(req.loggedIn) {
+        UserActivity.findOne({user:req.user._id, activity: req.body.id}, function(err, user_activity) {
+            if(err) {
+                // remove error
+            } else {
+                user_activity.rating = req.body.rating;
+                user_activity.save(function(err, result) {
+                    if(!err) {
+                        
+                    } else {
+                        res.send(null);
+                    }
+                });
             }
         });
     } else {

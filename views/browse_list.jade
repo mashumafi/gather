@@ -1,11 +1,10 @@
 ul#listBrowse(data-role="listview")
     <% for(var i = 0; i < activities.length; i++) { var activity = activities[i]; %>
-    | <li <%= activity.began ? 'data-theme="e"' : '' %>>
-    a.activity(href="#")
-        input(type="hidden", name="id", value!="<%= activity._id %>")
-        h2.ui-li-heading <%= activity.name %>
-        p.ui-li-aside.ui-li-desc <%= activity.begin %>
-        p.ui-li-desc <%= activity.description %>
-        p.ui-li-desc <%= activity.distance %> miles
-    | </li>
+    li(data-theme!="<%= activity.began ? 'e' : 'c' %>")
+        a.activity(href="#")
+            input(type="hidden", name="id", value!="<%= activity._id %>")
+            h2.ui-li-heading <%= activity.name %>
+            p.ui-li-aside.ui-li-desc <%= activity.begin %>
+            p.ui-li-desc <%= activity.description %>
+            p.ui-li-desc <%= activity.distance %> miles
     <% } %>
