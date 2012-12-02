@@ -40,7 +40,10 @@ define(['underscore', 'Backbone', 'text!/browse.tpl', 'text!/browse_list.tpl', '
             btnToggleFilter_clickHandler: function(event) {
                 if($('#filter').is(":visible")) {
                     var filter = document.getElementById('filter');
-                    var latest = new D8.create(filter.latestDate.value + ' ' + filter.latestTime.value);
+                    var latest = new D8.create(filter.latestDate.value);
+                    var time = filter.latestTime.value.split(':');
+                    latest.addHours(parseInt(time[0]));
+                    latest.addMinutes(parseInt(time[1]));
                     var data = {
                         latest: latest.date,
                         now: new Date,

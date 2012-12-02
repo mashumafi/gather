@@ -44,13 +44,21 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
             			}
             		},
             		submitHandler: function(form) {
+                        var begin = D8.create(form.begindate.value.replace(/\-/g, '.'));
+                        var btime = form.begintime.value.split(':');
+                        begin = begin.addHours(parseInt(btime[0]));
+                        begin = begin.addMinutes(parseInt(btime[1]));
+                        var end = D8.create(form.enddate.value.replace(/\-/g, '.'));
+                        var etime = form.endtime.value.split(':');
+                        end = end.addHours(parseInt(etime[0]));
+                        end = end.addMinutes(parseInt(etime[1]));
                         var data = {
                             id: id,
                             name: form.name.value,
                             description: form.description.value,
                             location: form.location.value,
-                            begin: new Date(form.begindate.value + ' ' + form.begintime.value + ':00'),
-                            end: new Date(form.enddate.value + ' ' + form.endtime.value + ':00')
+                            begin: begin.date,
+                            end: end.date
                         };
             			$.ajax({
             				url: id ? 'update' : 'create',
