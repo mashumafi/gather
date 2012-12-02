@@ -11,8 +11,9 @@ define(['underscore', 'Backbone', 'text!/schedule.tpl', 'views/details'],
             render:function () {
                 var now = this.options.now, owner = [], member=[];
                 var activities = this.options.activities;
-                activities.sort();
-                activities.reverse();
+                activities.sort(function(a, b) {
+                    return new Date(a.begin) - new Date(b.begin);
+                });
                 for(var i = 0; i < activities.length; i++) {
                     var activity = activities[i];
                     activity.begin = new Date(activity.begin).timespan(now);

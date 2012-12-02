@@ -15,11 +15,13 @@ Implemented
 *list the creator of the activity (username only)
 *delete activity (only if creator) [this will be at the top right of the edit page]
 *edit an activity (name, desc, etc.) (only if creator) [this can use create page, change create button at bottom to update]
+*sort by time on schedule
+*sort by distance/time on client (for browse)
 
 Not implemented
-*sort by distance/time on client (for browse)
 *store defaults for distance/delay
 *have distance/time update if you move or time passes (browse/schedule)
+*paginate the browse page
 
 Josh/Noah
 *style (4 styles, first 2 for entire app (right now its grey/blue) last 2 for errors(red)/warning(yellow))
