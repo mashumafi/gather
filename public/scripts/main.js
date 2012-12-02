@@ -67,6 +67,13 @@ require(['domReady', 'views/login', 'views/home', 'jqm', 'jqv', 'D8'],
                     return i.timeBetween(f, 'seconds') + ' seconds';
                 }
             }
+            Array.prototype.distance = function() {
+                var sum = 0;
+                for(var i = 0; i < this.length; i++) {
+                    sum += this[i] * this[i];
+                }
+                return Math.sqrt(sum);
+            }
             function onDeviceReady(desktop) {
                 // Hiding splash screen when app is loaded
                 if (desktop !== true)

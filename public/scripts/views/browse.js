@@ -50,8 +50,7 @@ define(['underscore', 'Backbone', 'text!/browse.tpl', 'text!/browse_list.tpl', '
                             switch($('input[name=sort]:checked').val()) {
                                 case 'distance':
                                     activities.sort(function(a, b) {
-                                        return Math.sqrt(Math.pow(a.location[0],2)+Math.pow(a.location[1],2)) -
-                                            Math.sqrt(Math.pow(b.location[0],2)+Math.pow(b.location[1],2));
+                                        return a.location.distance();
                                     });
                                     break;
                                 default: // time
