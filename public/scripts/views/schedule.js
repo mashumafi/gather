@@ -83,7 +83,6 @@ define(['underscore', 'Backbone', 'text!/schedule.tpl', 'views/details'],
                 var desc = $(event.target).parent().parent();
                 desc.attr('data-rating', $(event.target).attr('data-rating'));
                 desc.find('.rating').each(function() {
-                    console.log(parseInt($(event.target).attr('data-rating')), parseInt(desc.attr('data-rating')));
                     if(parseInt($(this).attr('data-rating')) <= parseInt(desc.attr('data-rating'))) {
                         $(this).attr('src', 'image/star-on.png');
                     } else {
