@@ -21,7 +21,11 @@ div(data-role="content")
     <% if(expired) { %>
     div(data-role="collapsible", data-inset="false", data-collapsed="false")
         h3 Rating
-        p Not implemented
+        div
+            <% for(var j = 1; j <= 5; j++) { %>
+            span
+                img.rating(src!="<%= j <= rating ? 'image/star-on.png' : 'image/star-off.png' %>", data-rating!="<%= j %>")
+            <% } %>
     <% } else { %>
     div(data-role="collapsible", data-inset="false", data-collapsed="false")
         h3 Begin

@@ -15,6 +15,14 @@ define(['underscore', 'Backbone', 'text!/details.tpl', 'views/create'],
                 this.options.end = D8.create(this.options.end);
                 this.options.expired = this.options.end.date < new Date();
                 this.options.end = this.options.end.format('mmmm dd, yyyy hh:MM TT');
+                var members = this.options.members,  count = 0, rating = 0;
+                for(var i = 0; i < members.length; i++) {
+                    if(members[i].rating > 0) {
+                        count++;
+                        rating += members[i].rating;
+                    }
+                }
+                this.options.rating = count > 0 ? Math.round(rating / count) : 0;
                 this.$el.html(_.template(DetailsTPL, this.options));
                 return this;
             },
