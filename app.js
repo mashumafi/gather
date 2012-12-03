@@ -318,13 +318,11 @@ app.post('/details', function(req, res) {
                     .where('user')
                     .equals(req.user._id)
                     .exec(callback);
-            }, owners: function(callback) {
+            }, members: function(callback) {
                 UserActivity.find()
                     .select('user -_id')
                     .where('activity')
                     .equals(req.body.id)
-                    .where('owner')
-                    .equals(true)
                     .populate('user', 'username')
                     .exec(callback);
             }
@@ -340,7 +338,7 @@ app.post('/details', function(req, res) {
                     _id: item.activity._id,
                     location: item.activity.location,
                     owner: item.user_activity ? item.user_activity.owner : null,
-                    owners: item.owners
+                    members: item.members
                 });
             }
         });

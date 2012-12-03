@@ -23,10 +23,10 @@ div(data-role="content")
         h3 End
         p <%= end %>
     div(data-role="collapsible", data-inset="false")
-        h3 Owners
+        h3 Members (<%= members.length %>)
         p
-            <% for(var i = 0; i < owners.length; i++) { %>
-            p <%= owners[i].user.username %>
+            <% for(var i = 0; i < members.length; i++) { %>
+            p <%= members[i].user.username %>
             <% } %>
     div(data-role="collapsible", data-inset="false", data-collapsed="false")
         h3 Map
