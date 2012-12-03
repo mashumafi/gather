@@ -24,9 +24,14 @@ div(data-role="content")
         p <%= end %>
     div(data-role="collapsible", data-inset="false")
         h3 Members (<%= members.length %>)
-        p
+        div
             <% for(var i = 0; i < members.length; i++) { %>
-            p <%= members[i].user.username %>
+            div
+                <% if(members[i].owner) { %>
+                span
+                    img(src='image/crown.png')
+                <% } %>
+                <%= members[i].user.username %>
             <% } %>
     div(data-role="collapsible", data-inset="false", data-collapsed="false")
         h3 Map

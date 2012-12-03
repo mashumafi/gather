@@ -320,7 +320,7 @@ app.post('/details', function(req, res) {
                     .exec(callback);
             }, members: function(callback) {
                 UserActivity.find()
-                    .select('user -_id')
+                    .select('user -_id owner')
                     .where('activity')
                     .equals(req.body.id)
                     .populate('user', 'username')
