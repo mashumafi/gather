@@ -11,8 +11,8 @@ define(['underscore', 'Backbone', 'text!/details.tpl', 'views/create'],
             },
 
             render:function () {
-                this.options.begin = new Date(this.options.begin);
-                this.options.end = new Date(this.options.end);
+                this.options.begin = D8.create(this.options.begin).format('mmmm dd, yyyy hh:MM TT');
+                this.options.end = D8.create(this.options.end).format('mmmm dd, yyyy hh:MM TT');
                 this.$el.html(_.template(DetailsTPL, this.options));
                 return this;
             },
