@@ -1,12 +1,14 @@
 div(data-role="header", data-position="fixed", data-id='header')
     a#btnBack(href="#", data-icon="back") Back
     h1 Details
+    <% if(!expired) { %>
     <% if(owner===true) { %>
     a#btnEdit(href="#", data-icon="gear") Edit
     <% } else if(owner===false) { %>
     a#btnUnJoin(href="#", data-icon="minus") Unjoin
     <% } else if(owner===null) { %>
     a#btnJoin(href="#", data-icon="plus") Join
+    <% } %>
     <% } %>
 div(data-role="content")
     input(type="hidden", name='id', value=!"<%= _id %>")
@@ -16,6 +18,11 @@ div(data-role="content")
     div(data-role="collapsible", data-inset="false", data-collapsed="false")
         h3 Description
         p <%= description %>
+    <% if(expired) { %>
+    div(data-role="collapsible", data-inset="false", data-collapsed="false")
+        h3 Rating
+        p Not implemented
+    <% } else { %>
     div(data-role="collapsible", data-inset="false", data-collapsed="false")
         h3 Begin
         p <%= begin %>
@@ -36,3 +43,4 @@ div(data-role="content")
     div(data-role="collapsible", data-inset="false", data-collapsed="false")
         h3 Map
         p <%= location %>
+    <% } %>

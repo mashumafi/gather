@@ -12,7 +12,9 @@ define(['underscore', 'Backbone', 'text!/details.tpl', 'views/create'],
 
             render:function () {
                 this.options.begin = D8.create(this.options.begin).format('mmmm dd, yyyy hh:MM TT');
-                this.options.end = D8.create(this.options.end).format('mmmm dd, yyyy hh:MM TT');
+                this.options.end = D8.create(this.options.end);
+                this.options.expired = this.options.end.date < new Date();
+                this.options.end = this.options.end.format('mmmm dd, yyyy hh:MM TT');
                 this.$el.html(_.template(DetailsTPL, this.options));
                 return this;
             },
