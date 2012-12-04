@@ -33,7 +33,7 @@ define(['underscore', 'Backbone', 'text!/details.tpl', 'views/create'],
                         mapTypeId : google.maps.MapTypeId.ROADMAP
                     };
                     var $content = $("#gmap");
-                    $content.height (screen.height - 50);
+                    $content.height ($(window).height() - 50);
                     var map = new google.maps.Map ($content[0], options);
                     new google.maps.Marker ({
                         map : map,
