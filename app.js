@@ -142,8 +142,8 @@ app.post('/create', function(req, res) {
     if(req.loggedIn) {
         var doc = {
             name: req.body.name,
-            description: req.body.description,
-            location: {
+            desc: req.body.desc,
+            pos: {
                 lon: parseFloat(req.body.lon),
                 lat: parseFloat(req.body.lat)
             },
@@ -178,10 +178,10 @@ app.post('/update', function(req, res) {
             if(result.owner) {
                 var activity = result.activity;
                 activity.name = req.body.name;
-                activity.description = req.body.description;
+                activity.desc = req.body.desc;
                 activity.begin = req.body.begin;
                 activity.end = req.body.end;
-                activity.location = req.body.location.split(',');;
+                activity.pos = {lon: req.body.lon, lat: req.body.lat};
                 activity.save(function(err, result) {
                     res.send(null);
                 });
@@ -221,7 +221,7 @@ app.post('/schedule', function(req, res) {
             function(callback) {
                 UserActivity.find()
                     .select('-_id -user -__v')
-                    .populate('activity', 'name description begin location end', { end: { $gt: new Date(new Date(req.body.now)-1000*60*60*24*7) } })
+                    .populate('activity', 'name desc begin pos end', { end: { $gt: new Date(new Date(req.body.now)-1000*60*60*24*7) } })
                     .where('user')
                     .equals(req.user._id)
                     .exec(callback);
@@ -235,11 +235,11 @@ app.post('/schedule', function(req, res) {
                 async.map(activities, function(item, callback) {
                     callback(null, {
                         name: item.activity.name,
-                        description: item.activity.description,
+                        desc: item.activity.desc,
                         begin: item.activity.begin,
                         end: item.activity.end,
                         _id: item.activity._id,
-                        location: item.activity.location,
+                        pos: item.activity.pos,
                         owner: item.owner,
                         rating: item.rating,
                         review: item.review
@@ -344,11 +344,11 @@ app.post('/details', function(req, res) {
             }else {
                 res.send({
                     name: item.activity.name,
-                    description: item.activity.description,
+                    desc: item.activity.desc,
                     begin: item.activity.begin,
                     end: item.activity.end,
                     _id: item.activity._id,
-                    location: item.activity.location,
+                    pos: item.activity.pos,
                     owner: item.user_activity ? item.user_activity.owner : null,
                     members: item.members
                 });

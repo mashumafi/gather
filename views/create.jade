@@ -9,8 +9,8 @@ div(data-role="content")
         label(for="name") Name
         input#name(name="name", value!='<%= name %>')
 
-        label(for="description") Description
-        input#description(name="description", value!='<%= description %>')
+        label(for="desc") Description
+        input#desc(name="desc", value!='<%= desc %>')
 
         label(for="begindate") Begin Date
         input#begindate(type="date", name="begindate", value!='<%= begindate %>')
@@ -24,8 +24,8 @@ div(data-role="content")
         label(for="endtime") End Time
         input#endtime(type="time", name="endtime", value!='<%= endtime %>')
 
-        label(for="location") Location
-        input#location(name="location", value!='<%= location %>')
+        label(for="pos") Position
+        input#pos(name="pos", value!='<%= pos %>')
         button#btnUseCurrentGPS Use current position
 
         <% if(isNew) { %>

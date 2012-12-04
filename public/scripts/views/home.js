@@ -40,12 +40,11 @@ define(['jquery', 'underscore', 'Backbone', 'D8', 'views/create', 'text!/home.tp
                 $.mobile.jqmNavigator.pushView(new Create({
                     _id: null,
                     name: '',
-                    description: '',
+                    desc: '',
                     begindate: now.format('yyyy-mm-dd'),
                     begintime: now.format('HH:MM'),
                     enddate: later.format('yyyy-mm-dd'),
                     endtime: later.format('HH:MM'),
-                    location: '',
                     isNew: true
                 }));
             },

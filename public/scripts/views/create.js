@@ -11,6 +11,11 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
 
             render:function () {
                 var id = this.options._id;
+                if(!this.options.isNew) {
+                    this.options.pos = this.options.lon + ',' + this.options.lat;
+                } else {
+                    this.options.pos = '';
+                }
                 this.$el.html(_.template(CreateTPL, this.options));
                 $("#frmActivityCreate").validate({
             		rules: {
@@ -18,7 +23,7 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
             				required: true,
             				minlength: 3
             			},
-            			description: {
+            			desc: {
             				required: true,
             				minlength: 3
             			},
@@ -38,7 +43,7 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
             				required: true,
                             time: true
             			},
-                    	location: {
+                    	pos: {
             				required: true,
                             gps: true
             			}
@@ -52,11 +57,11 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
                         var etime = form.endtime.value.split(':');
                         end = end.addHours(parseInt(etime[0]));
                         end = end.addMinutes(parseInt(etime[1]));
-                        var gps = parseGPS(form.location.value);
+                        var gps = parseGPS(form.pos.value);
                         var data = {
                             id: id,
                             name: form.name.value,
-                            description: form.description.value,
+                            desc: form.desc.value,
                             lon: gps.lon,
                             lat: gps.lat,
                             begin: begin.date,
@@ -104,7 +109,7 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
             
             btnUseCurrentGPS_clickHandler: function(event) {
                 var gps = getCurrentPosition();
-                $('input[name=location]').val(gps.lon + ',' + gps.lat);
+                $('input[name=pos]').val(gps.lon + ',' + gps.lat);
                 return false;
             }
         });

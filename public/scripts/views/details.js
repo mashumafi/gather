@@ -24,7 +24,7 @@ define(['underscore', 'Backbone', 'text!/details.tpl', 'views/create'],
                 }
                 this.options.rating = count > 0 ? Math.round(rating / count) : 0;
                 this.$el.html(_.template(DetailsTPL, this.options));
-                if(!this.options.expired) {var lat = $("#lat").val ();
+                if(!this.options.expired) {
                     var gps = getCurrentPosition();
                     var latlng = new google.maps.LatLng(gps.lat, gps.lon);
                     var options = {
@@ -38,7 +38,7 @@ define(['underscore', 'Backbone', 'text!/details.tpl', 'views/create'],
                     new google.maps.Marker ({
                         map : map,
                         animation : google.maps.Animation.DROP,
-                        position : new google.maps.LatLng(parseFloat(this.options.location.lat), parseFloat(this.options.location.lon))
+                        position : new google.maps.LatLng(parseFloat(this.options.pos.lat), parseFloat(this.options.pos.lon))
                     });
                     new google.maps.Marker ({
                         map : map,
@@ -72,12 +72,13 @@ define(['underscore', 'Backbone', 'text!/details.tpl', 'views/create'],
                 $.mobile.jqmNavigator.pushView(new Create({
                     _id: data._id,
                     name: data.name,
-                    description: data.description,
+                    desc: data.desc,
                     begindate: now.format('yyyy-mm-dd'),
                     begintime: now.format('HH:MM'),
                     enddate: later.format('yyyy-mm-dd'),
                     endtime: later.format('HH:MM'),
-                    location: data.location,
+                    lon: data.pos.lon,
+                    lat: data.pos.lat,
                     isNew: false
                 }));
             },

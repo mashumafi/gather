@@ -17,7 +17,7 @@ div(data-role="content")
         p <%= name %>
     div(data-role="collapsible", data-inset="false", data-collapsed="false")
         h3 Description
-        p <%= description %>
+        p <%= desc %>
     <% if(expired) { %>
     div(data-role="collapsible", data-inset="false", data-collapsed="false")
         h3 Rating
@@ -57,5 +57,5 @@ div(data-role="content")
             <% } %>
     div(data-role="collapsible", data-inset="false", data-collapsed="false")
         h3 Map
-        #gmap <%= location %>
+        #gmap
     <% } %>

@@ -41,10 +41,10 @@ module.exports.User = db.model('users', UserSchema);
 
 var ActivitySchema = new Schema({
     name: String,
-    description: String,
+    desc: String,
     begin: Date,
     end: Date,
-    location: { type: { lon: Number, lat: Number }, index: '2d' },
+    pos: { type: { lon: Number, lat: Number }, index: '2d' },
     user_activities: [{type: ObjectId, ref: 'user_activities'}]
 });
 module.exports.Activity = db.model('activities', ActivitySchema);

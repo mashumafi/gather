@@ -11,7 +11,7 @@ div(data-role="content")
                 input(type="hidden", name="id", value!="<%= activity._id %>")
                 h2.ui-li-heading <%= activity.name %>
                 p.ui-li-aside.ui-li-desc <%= activity.begin %>
-                p.ui-li-desc <%= activity.description %>
+                p.ui-li-desc <%= activity.desc %>
                 p.ui-li-desc <%= activity.distance %> miles
         <% } %>
         <% } %>
@@ -23,7 +23,7 @@ div(data-role="content")
                 input(type="hidden", name="id", value!="<%= activity._id %>")
                 h2.ui-li-heading <%= activity.name %>
                 p.ui-li-aside.ui-li-desc <%= activity.begin %>
-                p.ui-li-desc <%= activity.description %>
+                p.ui-li-desc <%= activity.desc %>
                 p.ui-li-desc <%= activity.distance %> miles
         <% } %>
         <% } %>
@@ -35,7 +35,7 @@ div(data-role="content")
                 input(type="hidden", name="id", value!="<%= activity._id %>")
                 h2.ui-li-heading <%= activity.name %>
                 p.ui-li-aside.ui-li-desc Ended
-                p.ui-li-desc <%= activity.description %>
+                p.ui-li-desc <%= activity.desc %>
                 p.ui-li-desc(data-rating!="<%= activity.rating %>")
                     <% for(var j = 1; j <= 5; j++) { %>
                     span

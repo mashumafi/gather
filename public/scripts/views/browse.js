@@ -63,7 +63,7 @@ define(['underscore', 'Backbone', 'text!/browse.tpl', 'text!/browse_list.tpl', '
                             switch($('input[name=sort]:checked').val()) {
                                 case 'distance':
                                     activities.sort(function(a, b) {
-                                        return a.location.distance();
+                                        return a.pos.distance();
                                     });
                                     break;
                                 default: // time
