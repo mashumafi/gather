@@ -414,15 +414,16 @@ app.post('/rate', function(req, res) {
                 user_activity.reviewed = new Date;
                 user_activity.save(function(err, result) {
                     if(!err) {
-                        
+                        res.send({});
                     } else {
-                        res.send(null);
+                        console.log(err);
+                        res.send({err:true});
                     }
                 });
             }
         });
     } else {
-        res.send(null);
+        res.send({err: 'login'});
     }
 });
 http.createServer(app).listen(app.get('port'), function() {
