@@ -23,6 +23,10 @@ Implemented
 *fix li in browse_list/schedule
 *show activities that ended (seperate list at bottom, probably in red, with time/distance not shown [up to 1 week])
 *add rating system (show activities that ended and allow you to rate, put stars directly in list)
+*add count of members for an activity (detail page)
+*add rating of activity (details page, only for expired)
+*remove edit button (details page, only for expired)
+*show ativities that ended in your schedule
 
 Not implemented
 *store defaults for distance/delay
@@ -30,14 +34,12 @@ Not implemented
 *paginate the browse page
 *disable buttons on ajax
 *index the database (make things unique)
-*show ativities that ended in your schedule
 *add categories
 *remove code duplication for browse/schedule
-*add count of members for an activity (detail page)
-*add rating of activity (details page, only for expired)
-*remove edit button (details page, only for expired)
+*add reviews
 
 Josh/Noah
+*test (try to break and tell me how)
 *style (4 styles, first 2 for entire app (right now its grey/blue) last 2 for errors(red)/warning(yellow))
     see: http://jquerymobile.com/themeroller/
 *enter test data*
