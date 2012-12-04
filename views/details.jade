@@ -30,12 +30,15 @@ div(data-role="content")
         h3 Reviews (<%= reviews %>)
         div
             <% for(var i = 0; i < members.length; i++) { %>
-            div
-                <% if(members[i].rating) { %>
-                <%= members[i].user.username %>
-                <%= members[i].rating %>
+            <% if(members[i].rating) { %>
+            div(data-role="collapsible", data-inset="true")
+                h3 <%= members[i].user.username %>
+                    <% for(var j = 1; j <= 5; j++) { %>
+                    span
+                        img.rating(src!="<%= j <= members[i].rating ? 'image/star-on.png' : 'image/star-off.png' %>", data-rating!="<%= j %>")
+                    <% } %>
                 <%= members[i].review %>
-                <% } %>
+            <% } %>
             <% } %>
     <% } else { %>
     div(data-role="collapsible", data-inset="false", data-collapsed="false")
