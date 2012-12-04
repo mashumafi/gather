@@ -24,13 +24,31 @@ define(['underscore', 'Backbone', 'text!/details.tpl', 'views/create'],
                 }
                 this.options.rating = count > 0 ? Math.round(rating / count) : 0;
                 this.$el.html(_.template(DetailsTPL, this.options));
+                if(!this.options.expired) {var lat = $("#lat").val ();
+                    var gps = getCurrentPosition();
+                    var latlng = new google.maps.LatLng (gps.lat, gps.lon);
+                    var options = {
+                        zoom : 15,
+                        center : latlng,
+                        mapTypeId : google.maps.MapTypeId.ROADMAP
+                    };
+                    var $content = $("#gmap");
+                    $content.height (screen.width);
+                    var map = new google.maps.Map ($content[0], options);
+
+                    new google.maps.Marker ({
+                        map : map,
+                        animation : google.maps.Animation.DROP,
+                        position : latlng
+                    });
+                }
                 return this;
             },
 
             btnBack_clickHandler: function (event) {
                 $.mobile.jqmNavigator.popView();
             },
-            
+
             btnJoin_clickHandler: function (event) {
                 var id = this.options._id;
                 $.ajax({
@@ -42,7 +60,7 @@ define(['underscore', 'Backbone', 'text!/details.tpl', 'views/create'],
                     }
                 });
             },
-            
+
             btnEdit_clickHandler: function (event) {
                 var data = this.options;
                 var now = D8.create(data.begin);
@@ -59,7 +77,7 @@ define(['underscore', 'Backbone', 'text!/details.tpl', 'views/create'],
                     isNew: false
                 }));
             },
-            
+
             btnUnJoin_clickHandler: function (event) {
                 var id = this.options._id;
                 $.ajax({

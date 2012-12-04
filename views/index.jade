@@ -8,5 +8,6 @@ html
         script(type="text/javascript", src="scripts/libs/cordova/cordova-ios-2.1.0.js")
         script= ("var user = " + (loggedIn ? 'true' : 'false') + ';')
         script(data-main="scripts/main", src="scripts/libs/require/require.js")
+        script(src="http://maps.googleapis.com/maps/api/js?sensor=true")
     body
         #container
