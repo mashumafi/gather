@@ -39,6 +39,7 @@ Not implemented
 *add categories
 *remove code duplication for browse/schedule
 *show distance in schedule
+*prevent activity from ending before it starts (require minimum of 1 hour)
 
 Josh/Noah
 *test (try to break and tell me how)
