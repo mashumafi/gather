@@ -38,6 +38,7 @@ Not implemented
 *index the database (make things unique)
 *add categories
 *remove code duplication for browse/schedule
+*show distance in schedule
 
 Josh/Noah
 *test (try to break and tell me how)

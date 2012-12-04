@@ -27,7 +27,7 @@ div(data-role="content")
                 img.rating(src!="<%= j <= rating ? 'image/star-on.png' : 'image/star-off.png' %>", data-rating!="<%= j %>")
             <% } %>
     div(data-role="collapsible", data-inset="false")
-        h3 Reviews
+        h3 Reviews (<%= reviews %>)
         div
             <% for(var i = 0; i < members.length; i++) { %>
             div

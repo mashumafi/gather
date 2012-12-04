@@ -23,6 +23,7 @@ define(['underscore', 'Backbone', 'text!/details.tpl', 'views/create'],
                     }
                 }
                 this.options.rating = count > 0 ? Math.round(rating / count) : 0;
+                this.options.reviews = count;
                 this.$el.html(_.template(DetailsTPL, this.options));
                 if(!this.options.expired) {
                     var gps = getCurrentPosition();
