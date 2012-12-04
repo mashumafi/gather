@@ -16,7 +16,7 @@ define(['underscore', 'Backbone', 'text!/browse.tpl', 'text!/browse_list.tpl', '
                     return new Date(a.begin) - new Date(b.begin);
                 });
                 for(var i = 0; i < activities.length; i++) {
-                    var activity = activities[i];
+                    var activity = activities[i].obj;
                     var begin = new Date(activity.begin);
                     var end = new Date(activity.end);
                     if(now > begin) {
@@ -26,7 +26,8 @@ define(['underscore', 'Backbone', 'text!/browse.tpl', 'text!/browse_list.tpl', '
                         activity.began = false;
                         activity.begin = 'Begins: ' + begin.timespan(now);
                     }
-                    activity.distance = Math.round(Math.sqrt(Math.pow(activity.location[0],2)+Math.pow(activity.location[1],2))*10)/10;
+                    activity.distance = activities[i].dis;
+                    activities[i] = activity;
                 }
                 this.$el.html(_.template(BrowseTPL, this.options));
                 $('#filter').hide();
@@ -44,11 +45,13 @@ define(['underscore', 'Backbone', 'text!/browse.tpl', 'text!/browse_list.tpl', '
                     var time = filter.latestTime.value.split(':');
                     latest.addHours(parseInt(time[0]));
                     latest.addMinutes(parseInt(time[1]));
+                    var gps = getCurrentPosition();
                     var data = {
                         latest: latest.date,
                         now: new Date,
                         distance: parseFloat(filter.maxDistance.value),
-                        location: [0,0]
+                        lon: gps.lon,
+                        lat: gps.lat
                     };
                     $.ajax({
                         url: 'browse',
@@ -71,7 +74,7 @@ define(['underscore', 'Backbone', 'text!/browse.tpl', 'text!/browse_list.tpl', '
                                     break;
                             }
                             for(var i = 0; i < activities.length; i++) {
-                                var activity = activities[i];
+                                var activity = activities[i].obj;
                                 var begin = new Date(activity.begin);
                                 var end = new Date(activity.end);
                                 if(now > begin) {
@@ -81,7 +84,8 @@ define(['underscore', 'Backbone', 'text!/browse.tpl', 'text!/browse_list.tpl', '
                                     activity.began = false;
                                     activity.begin = 'Begins: ' + begin.timespan(now);
                                 }
-                                activity.distance = Math.round(Math.sqrt(Math.pow(activity.location[0],2)+Math.pow(activity.location[1],2))*10)/10;
+                                activity.distance = activities[i].dis;
+                                activities[i] = activity;
                             }
                             $('#listBrowse').replaceWith(_.template(BrowseListTPL, data));
                             $('#listBrowse').listview();

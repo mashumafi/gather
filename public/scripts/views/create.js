@@ -52,11 +52,13 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
                         var etime = form.endtime.value.split(':');
                         end = end.addHours(parseInt(etime[0]));
                         end = end.addMinutes(parseInt(etime[1]));
+                        var gps = parseGPS(form.location.value);
                         var data = {
                             id: id,
                             name: form.name.value,
                             description: form.description.value,
-                            location: form.location.value,
+                            lon: gps.lon,
+                            lat: gps.lat,
                             begin: begin.date,
                             end: end.date
                         };
@@ -101,7 +103,8 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
             },
             
             btnUseCurrentGPS_clickHandler: function(event) {
-                $('input[name=location]').val('0,0');
+                var gps = getCurrentPosition();
+                $('input[name=location]').val(gps.lon + ',' + gps.lat);
                 return false;
             }
         });

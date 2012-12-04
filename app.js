@@ -111,7 +111,7 @@ app.configure(function() {
     // app.use(express.cookieSession({ secret: 'esoognom'}));
     app.use(express.session({ secret: 'esoognom'}));
     app.use(everyauth.middleware());
-    app.use(express.staticCache());
+    //app.use(express.staticCache()); use varnish or similar reverse proxy caches.
     app.use(express.static(path.join(__dirname, 'public')));
     app.use(app.router);
 });
@@ -140,31 +140,29 @@ var istime = /^((([0-1][0-9])|(2[0-3]))(:([0-5][0-9])))$/;
 var isgps = /^(-?(?:1[0-7]|[1-9])?\d(?:\.\d{1,6})?|180(?:\.0{1,6})?),(-?[1-8]?\d(?:\.\d{1,6})?|90(?:\.0{1,6})?)$/;
 app.post('/create', function(req, res) {
     if(req.loggedIn) {
-        if(isgps.test(req.body.location)) {
-            var location = req.body.location.split(',');
-            var doc = {
-                name: req.body.name,
-                description: req.body.description,
-                location: location,
-                begin: req.body.begin,
-                end: req.body.end
-            };
-            Activity.create(doc, function(err, activity) {
-                if(err) {
-                    // creation error
-                } else {
-                    UserActivity.create({user:req.user._id, activity: activity._id, owner: true, rating: 0}, function(err, user_activity) {
-                        if(err) {
-                            // creation error
-                        } else {
-                            res.send(activity);
-                        }
-                    });
-                }
-            });
-        } else {
-            // validation error
-        }
+        var doc = {
+            name: req.body.name,
+            description: req.body.description,
+            location: {
+                lon: parseFloat(req.body.lon),
+                lat: parseFloat(req.body.lat)
+            },
+            begin: req.body.begin,
+            end: req.body.end
+        };
+        Activity.create(doc, function(err, activity) {
+            if(err) {
+                // creation error
+            } else {
+                UserActivity.create({user:req.user._id, activity: activity._id, owner: true, rating: 0}, function(err, user_activity) {
+                    if(err) {
+                        // creation error
+                    } else {
+                        res.send(activity);
+                    }
+                });
+            }
+        });
     } else {
         res.send(null);
     }
@@ -262,6 +260,7 @@ app.get('/browse.tpl', function(req, res) {
 app.get('/browse_list.tpl', function(req, res) {
     res.render('browse_list');
 });
+var earthRadiusMiles = 3956.6;
 app.post('/browse', function(req, res) {
     if(req.loggedIn) {
         async.waterfall([
@@ -283,18 +282,27 @@ app.post('/browse', function(req, res) {
                     callback(null, item.activity._id);
                 }, callback);
             }, function(activities, callback) {
-                Activity.find({_id: {$nin: activities}, location: { $near: req.body.location, $maxDistance: req.body.distance }})
-                    .select('-__v -user_activities')
-                    .where('end')
-                    .gte(new Date(req.body.now))
-                    .lte(new Date(req.body.latest))
-                    .exec(callback);
+                Activity.collection.geoNear(parseFloat(req.body.lat), parseFloat(req.body.lon), {
+                    maxDistance: parseFloat(req.body.distance) / earthRadiusMiles,
+                    spherical : true,
+                    query: {
+                        _id: {
+                            $nin: activities
+                        },
+                        end: {
+                            $gte: new Date(req.body.now),
+                            $lte: new Date(req.body.latest)
+                        }
+                    }
+                }, callback);
+                // .select('-__v -user_activities')
             }
         ], function (err, result) {
             if(err) {
+                console.log(arguments);
                 // something went wrong
             } else {
-                res.send(result);
+                res.send(result.results);
             }
         });
     } else {

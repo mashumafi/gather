@@ -53,11 +53,13 @@ define(['jquery', 'underscore', 'Backbone', 'D8', 'views/create', 'text!/home.tp
             btnBrowse_clickHandler:function (event) {
                 var defaults = document.getElementById('browseDefaults');
                 var latest = new D8().addHours(parseFloat(defaults.hoursDelay.value));
+                var gps = getCurrentPosition();
                 var data = {
                     latest: latest.date,
                     now: new Date,
                     distance: parseFloat(defaults.maxDistance.value),
-                    location: [0,0]
+                    lon: gps.lon,
+                    lat: gps.lat
                 };
                 $.ajax({
                     url: 'browse',

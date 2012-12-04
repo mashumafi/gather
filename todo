@@ -27,6 +27,8 @@ Implemented
 *add rating of activity (details page, only for expired)
 *remove edit button (details page, only for expired)
 *show ativities that ended in your schedule
+*add reviews (schedule after you rate)
+*show reviews in detail pages (after activity ends)
 
 Not implemented
 *store defaults for distance/delay
@@ -36,9 +38,6 @@ Not implemented
 *index the database (make things unique)
 *add categories
 *remove code duplication for browse/schedule
-*add reviews
-*persist in database
-*show in detail pages
 
 Josh/Noah
 *test (try to break and tell me how)

@@ -39,9 +39,22 @@ require.config({
 
 require(['domReady', 'views/login', 'views/home', 'jqm', 'jqv', 'D8'],
     function (domReady, LoginView, HomeView) {
-
         // domReady is RequireJS plugin that triggers when DOM is ready
         domReady(function () {
+            var gps = {lon:0,lat:0};
+            window.getCurrentPosition = function() {
+                return gps;
+            };
+            window.parseGPS = function(str) {
+                var res = str.match(isgps);
+                return {lon:parseFloat(res[1]),lat:parseFloat(res[2])};
+            };
+            navigator.geolocation.getCurrentPosition (function (pos)
+            {
+                gps.lat = Math.round(pos.coords.latitude*1000000)/1000000;
+                gps.lon = Math.round(pos.coords.longitude*1000000)/1000000;
+                console.log(gps);
+            });
             var istime = /^((([0-1][0-9])|(2[0-3]))(:([0-5][0-9])))$/;
             var isdate = /^(([0-9]{4})-((0[1-9])|(1[0-2]))-((0[1-9])|([1-2][0-9])|(3[0-1])))$/;
             var isgps = /^(-?(?:1[0-7]|[1-9])?\d(?:\.\d{1,6})?|180(?:\.0{1,6})?),(-?[1-8]?\d(?:\.\d{1,6})?|90(?:\.0{1,6})?)$/;

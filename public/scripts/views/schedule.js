@@ -28,7 +28,8 @@ define(['underscore', 'Backbone', 'text!/schedule.tpl', 'views/details'],
                         activity.began = false;
                         activity.begin = 'Begins: ' + begin.timespan(now);
                     }
-                    activity.distance = Math.round(activity.location.distance()*10)/10;
+                    //activity.distance = Math.round(activity.location.distance()*10)/10;
+                    activity.distance = activity.location;
                     if(end > now) {
                         (activity.owner ? owner : member).push(activity);
                     } else {
