@@ -26,6 +26,9 @@ div(data-role="content")
             span
                 img.rating(src!="<%= j <= rating ? 'image/star-on.png' : 'image/star-off.png' %>", data-rating!="<%= j %>")
             <% } %>
+    div(data-role="collapsible", data-inset="false")
+        h3 Reviews
+        div Not implemented
     <% } else { %>
     div(data-role="collapsible", data-inset="false", data-collapsed="false")
         h3 Begin

@@ -39,8 +39,8 @@ div(data-role="content")
                 p.ui-li-desc(data-rating!="<%= activity.rating %>")
                     <% for(var j = 1; j <= 5; j++) { %>
                     span
-                        img.rating(src!="<%= j <= activity.rating ? 'image/star-on.png' : 'image/star-off.png' %>", data-rating!="<%= j %>")
+                        img.rating.dontlink(src!="<%= j <= activity.rating ? 'image/star-on.png' : 'image/star-off.png' %>", data-rating!="<%= j %>")
                     <% } %>
-                    div(class="review")
+                    div.review.dontlink
         <% } %>
         <% } %>

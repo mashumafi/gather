@@ -111,6 +111,7 @@ app.configure(function() {
     // app.use(express.cookieSession({ secret: 'esoognom'}));
     app.use(express.session({ secret: 'esoognom'}));
     app.use(everyauth.middleware());
+    app.use(express.staticCache());
     app.use(express.static(path.join(__dirname, 'public')));
     app.use(app.router);
 });

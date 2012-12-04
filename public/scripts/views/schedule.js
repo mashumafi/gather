@@ -45,24 +45,26 @@ define(['underscore', 'Backbone', 'text!/schedule.tpl', 'views/details'],
             },
 
             activityDetail_handler: function (event) {
-                if($(event.target).prop("tagName") != 'TEXTAREA') {
-                    if($('textarea.review:visible').length > 0) {
-                        var rating = $('textarea.review:visible');
-                        rating.replaceWith($(document.createElement('div')).addClass('review').text(rating.val()));
-                        // TODO: send review to server
-                    } else {
-                        var id = $(event.target).parent().find('input').val();
-                        $.ajax({
-                            url: 'details',
-                            data: {
-                                id: id
-                            },
-                            type: 'POST',
-                            success: function(res) {
-                                $.mobile.jqmNavigator.pushView(new Details(res));
-                            }
-                        });
-                    }
+                if(this.isFirst && !$(event.target).is(this.lastReview)) {
+                    var rating = $('textarea.review:visible');
+                    rating.replaceWith($(document.createElement('div')).addClass('review').text(rating.val()));
+                    this.lastReview = null;
+                    return;
+                    // TODO: send review to server
+                }
+                this.isFirst = true;
+                if(this.lastReview == null && !$(event.target).hasClass("dontlink")) {
+                    var id = $(event.target).parent().find('input').val();
+                    $.ajax({
+                        url: 'details',
+                        data: {
+                            id: id
+                        },
+                        type: 'POST',
+                        success: function(res) {
+                            $.mobile.jqmNavigator.pushView(new Details(res));
+                        }
+                    });
                 }
             },
             
@@ -90,9 +92,13 @@ define(['underscore', 'Backbone', 'text!/schedule.tpl', 'views/details'],
             rating_clickHandler: function(event) {
                 var desc = $(event.target).parent().parent();
                 desc.attr('data-rating', $(event.target).attr('data-rating'));
-                var textarea = $(document.createElement('textarea')).addClass('review').val(desc.parent().find('div.review').text());
+                var rating = $('textarea.review:visible');
+                rating.replaceWith($(document.createElement('div')).addClass('review').text(rating.val()));
+                var textarea = $(document.createElement('textarea')).addClass('review dontlink').val(desc.parent().find('div.review').text());
                 desc.parent().find('div.review').replaceWith(textarea);
                 textarea.textinput().focus();
+                this.lastReview = textarea;
+                this.isFirst = false;
                 desc.find('.rating').each(function() {
                     if(parseInt($(this).attr('data-rating')) <= parseInt(desc.attr('data-rating'))) {
                         $(this).attr('src', 'image/star-on.png');
@@ -112,8 +118,6 @@ define(['underscore', 'Backbone', 'text!/schedule.tpl', 'views/details'],
                         $.mobile.jqmNavigator.pushView(new Details(res));
                     }
                 });
-                event.stopPropagation();
-                return false;
             }
         });
 
