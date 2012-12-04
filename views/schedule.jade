@@ -41,6 +41,6 @@ div(data-role="content")
                     span
                         img.rating.dontlink(src!="<%= j <= activity.rating ? 'image/star-on.png' : 'image/star-off.png' %>", data-rating!="<%= j %>")
                     <% } %>
-                    div.review.dontlink
+                    div.review.dontlink <%= activity.review %>
         <% } %>
         <% } %>

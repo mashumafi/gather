@@ -243,7 +243,8 @@ app.post('/schedule', function(req, res) {
                         _id: item.activity._id,
                         location: item.activity.location,
                         owner: item.owner,
-                        rating: item.rating
+                        rating: item.rating,
+                        review: item.review
                     });
                 }, callback);
             }
@@ -321,7 +322,7 @@ app.post('/details', function(req, res) {
                     .exec(callback);
             }, members: function(callback) {
                 UserActivity.find()
-                    .select('user -_id owner rating')
+                    .select('user -_id owner rating review')
                     .where('activity')
                     .equals(req.body.id)
                     .populate('user', 'username')
@@ -380,6 +381,27 @@ app.post('/rate', function(req, res) {
                 // remove error
             } else {
                 user_activity.rating = req.body.rating;
+                user_activity.reviewed = new Date;
+                user_activity.save(function(err, result) {
+                    if(!err) {
+                        
+                    } else {
+                        res.send(null);
+                    }
+                });
+            }
+        });
+    } else {
+        res.send(null);
+    }
+});app.post('/review', function(req, res) {
+    if(req.loggedIn) {
+        UserActivity.findOne({user:req.user._id, activity: req.body.id}, function(err, user_activity) {
+            if(err) {
+                // remove error
+            } else {
+                user_activity.review = req.body.review;
+                user_activity.reviewed = new Date;
                 user_activity.save(function(err, result) {
                     if(!err) {
                         

@@ -45,12 +45,23 @@ define(['underscore', 'Backbone', 'text!/schedule.tpl', 'views/details'],
             },
 
             activityDetail_handler: function (event) {
-                if(this.isFirst && !$(event.target).is(this.lastReview)) {
+                if(this.isFirst && this.lastReview && !$(event.target).is(this.lastReview)) {
                     var rating = $('textarea.review:visible');
                     rating.replaceWith($(document.createElement('div')).addClass('review').text(rating.val()));
                     this.lastReview = null;
+                    var id = $(event.target).parent().find('input').val();
+                    $.ajax({
+                        url: 'review',
+                        data: {
+                            id: id,
+                            review: rating.val()
+                        },
+                        type: 'POST',
+                        success: function(res) {
+                            $.mobile.jqmNavigator.pushView(new Details(res));
+                        }
+                    });
                     return;
-                    // TODO: send review to server
                 }
                 this.isFirst = true;
                 if(this.lastReview == null && !$(event.target).hasClass("dontlink")) {

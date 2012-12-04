@@ -37,6 +37,8 @@ Not implemented
 *add categories
 *remove code duplication for browse/schedule
 *add reviews
+*persist in database
+*show in detail pages
 
 Josh/Noah
 *test (try to break and tell me how)
