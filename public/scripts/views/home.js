@@ -66,7 +66,8 @@ define(['jquery', 'underscore', 'Backbone', 'D8', 'views/create', 'text!/home.tp
                     data: data,
                     type: 'POST',
                     success: function(res) {
-                        data.activities = res;
+                        data.activities = res.activities;
+                        data.earthRadius = res.earthRadius;
                         data.date = latest.format('yyyy-mm-dd');
                         data.time = latest.format('HH:MM');
                         $.mobile.jqmNavigator.pushView(new Browse(data));

@@ -26,8 +26,7 @@ define(['underscore', 'Backbone', 'text!/browse.tpl', 'text!/browse_list.tpl', '
                         activity.began = false;
                         activity.begin = 'Begins: ' + begin.timespan(now);
                     }
-                    activity.distance = activities[i].dis;
-                    activities[i] = activity;
+                    activity.dis *= this.options.earthRadius;
                 }
                 this.$el.html(_.template(BrowseTPL, this.options));
                 $('#filter').hide();
@@ -41,10 +40,10 @@ define(['underscore', 'Backbone', 'text!/browse.tpl', 'text!/browse_list.tpl', '
             btnToggleFilter_clickHandler: function(event) {
                 if($('#filter').is(":visible")) {
                     var filter = document.getElementById('filter');
-                    var latest = new D8.create(filter.latestDate.value);
+                    var latest = new D8.create(filter.latestDate.value.replace(/\-/g, '.'));
                     var time = filter.latestTime.value.split(':');
-                    latest.addHours(parseInt(time[0]));
-                    latest.addMinutes(parseInt(time[1]));
+                    latest = latest.addHours(parseInt(time[0]));
+                    latest = latest.addMinutes(parseInt(time[1]));
                     var gps = getCurrentPosition();
                     var data = {
                         latest: latest.date,
@@ -58,7 +57,7 @@ define(['underscore', 'Backbone', 'text!/browse.tpl', 'text!/browse_list.tpl', '
                         data: data,
                         type: 'POST',
                         success: function(res) {
-                            data.activities = res;
+                            data.activities = res.activities;
                             var now = data.now;
                             var activities = data.activities;
                             switch($('input[name=sort]:checked').val()) {
@@ -84,8 +83,7 @@ define(['underscore', 'Backbone', 'text!/browse.tpl', 'text!/browse_list.tpl', '
                                     activity.began = false;
                                     activity.begin = 'Begins: ' + begin.timespan(now);
                                 }
-                                activity.distance = activities[i].dis;
-                                activities[i] = activity;
+                                activity.dis *= data.earthRadius;
                             }
                             $('#listBrowse').replaceWith(_.template(BrowseListTPL, data));
                             $('#listBrowse').listview();

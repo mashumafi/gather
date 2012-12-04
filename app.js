@@ -299,10 +299,12 @@ app.post('/browse', function(req, res) {
             }
         ], function (err, result) {
             if(err) {
-                console.log(arguments);
                 // something went wrong
             } else {
-                res.send(result.results);
+                res.send({
+                    activities: result.results,
+                    earthRadius: earthRadiusMiles
+                });
             }
         });
     } else {
