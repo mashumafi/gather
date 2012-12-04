@@ -26,7 +26,7 @@ define(['underscore', 'Backbone', 'text!/details.tpl', 'views/create'],
                 this.$el.html(_.template(DetailsTPL, this.options));
                 if(!this.options.expired) {var lat = $("#lat").val ();
                     var gps = getCurrentPosition();
-                    var latlng = new google.maps.LatLng (gps.lat, gps.lon);
+                    var latlng = new google.maps.LatLng(gps.lat, gps.lon);
                     var options = {
                         zoom : 15,
                         center : latlng,
@@ -35,7 +35,11 @@ define(['underscore', 'Backbone', 'text!/details.tpl', 'views/create'],
                     var $content = $("#gmap");
                     $content.height (screen.height - 50);
                     var map = new google.maps.Map ($content[0], options);
-
+                    new google.maps.Marker ({
+                        map : map,
+                        animation : google.maps.Animation.DROP,
+                        position : new google.maps.LatLng(parseFloat(this.options.location.lat), parseFloat(this.options.location.lon))
+                    });
                     new google.maps.Marker ({
                         map : map,
                         animation : google.maps.Animation.DROP,
