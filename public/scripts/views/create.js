@@ -58,7 +58,7 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
                         var etime = form.endtime.value.split(':');
                         end = end.addHours(parseInt(etime[0]));
                         end = end.addMinutes(parseInt(etime[1]));
-                        var gps = parseGPS($('hidden[name=pos]').val());
+                        var gps = parseGPS($('hidden[name=pos]').attr('value'));
                         var data = {
                             id: id,
                             name: form.name.value,

@@ -181,7 +181,7 @@ app.post('/update', function(req, res) {
                 activity.desc = req.body.desc;
                 activity.begin = req.body.begin;
                 activity.end = req.body.end;
-                activity.pos = {lon: req.body.lon, lat: req.body.lat};
+                activity.pos = {lon: parseFloat(req.body.lon), lat: parseFloat(req.body.lat)};
                 activity.save(function(err, result) {
                     res.send(null);
                 });
