@@ -35,7 +35,7 @@ define(['underscore', 'Backbone', 'text!/details.tpl', 'views/create'],
                     };
                     var $content = $("#gmap");
                     $content.height ($(window).width() - 50);
-                    var map = new google.maps.Map ($content[0], options);
+                    var map = new google.maps.Map($content[0], options);
                     new google.maps.Marker ({
                         map : map,
                         animation : google.maps.Animation.DROP,

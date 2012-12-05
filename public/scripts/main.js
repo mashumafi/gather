@@ -49,7 +49,7 @@ require(['domReady', 'views/login', 'views/home', 'jqm', 'jqv', 'D8'],
                 var res = str.match(isgps);
                 return {lon:parseFloat(res[1]),lat:parseFloat(res[2])};
             };
-            navigator.geolocation.getCurrentPosition (function (pos)
+            navigator.geolocation.getCurrentPosition(function (pos)
             {
                 gps.lat = Math.round(pos.coords.latitude*1000000)/1000000;
                 gps.lon = Math.round(pos.coords.longitude*1000000)/1000000;
