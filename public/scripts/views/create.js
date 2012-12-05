@@ -6,7 +6,8 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
             events:{
                 'click #btnBack':'btnBack_clickHandler',
                 'click #btnDelete':'btnDelete_clickHandler',
-                'click #btnUseCurrentGPS': 'btnUseCurrentGPS_clickHandler'
+                'click #btnUseCurrentGPS': 'btnUseCurrentGPS_clickHandler',
+                'keyup #geoencode': 'geoencode_keydownHandler'
             },
 
             render:function () {
@@ -57,7 +58,7 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
                         var etime = form.endtime.value.split(':');
                         end = end.addHours(parseInt(etime[0]));
                         end = end.addMinutes(parseInt(etime[1]));
-                        var gps = parseGPS(form.pos.value);
+                        var gps = parseGPS($('hidden[name=pos]').val());
                         var data = {
                             id: id,
                             name: form.name.value,
@@ -108,9 +109,34 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
             },
             
             btnUseCurrentGPS_clickHandler: function(event) {
-                var gps = getCurrentPosition();
-                $('input[name=pos]').val(gps.lon + ',' + gps.lat);
+                if($('#geoencode').val().length >= 1) {
+                    var gc = new google.maps.Geocoder(),
+                    opts = { 'address' : $('#geoencode').val() };
+                    gc.geocode(opts, function (results, status) {
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            var res = results[0];
+                            var loc = results[0].geometry.location,
+                            lat = Math.round(loc.$a*1000000)/1000000,
+                            lon = Math.round(loc.ab*1000000)/1000000;
+                            $('input#geoencode').val(res.formatted_address);
+                            $('hidden[name=pos]').val(lon + ',' + lat);
+                        } else {
+                        }
+                    });
+                } else {
+                    var gps = getCurrentPosition();
+                    $('hidden[name=pos]').val(gps.lon + ',' + gps.lat);
+                    $('input#geoencode').attr('placeholder', '[Current location]');
+                }
                 return false;
+            },
+            
+            geoencode_keydownHandler: function(event) {
+                if($(event.target).val().length >= 1) {
+                    $('#btnUseCurrentGPS .ui-btn-text').text('Search');
+                } else {
+                    $('#btnUseCurrentGPS .ui-btn-text').text('Current Position');
+                }
             }
         });
 

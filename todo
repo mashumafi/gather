@@ -40,6 +40,8 @@ Not implemented
 *remove code duplication for browse/schedule
 *show distance in schedule
 *prevent activity from ending before it starts (require minimum of 1 hour)
+*use geoencode api
+    store addresses someone types, reuse later and saves requests
 
 Josh/Noah
 *test (try to break and tell me how)
