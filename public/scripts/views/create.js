@@ -7,7 +7,7 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
                 'click #btnBack':'btnBack_clickHandler',
                 'click #btnDelete':'btnDelete_clickHandler',
                 'click #btnUseCurrentGPS': 'btnUseCurrentGPS_clickHandler',
-                'keyup #geoencode': 'geoencode_keydownHandler'
+                'keyup #geoencode': 'geoencode_keyupHandler'
             },
 
             render:function () {
@@ -58,7 +58,7 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
                         var etime = form.endtime.value.split(':');
                         end = end.addHours(parseInt(etime[0]));
                         end = end.addMinutes(parseInt(etime[1]));
-                        var gps = parseGPS($('hidden[name=pos]').attr('value'));
+                        var gps = parseGPS($('input[name=pos]').val());
                         var data = {
                             id: id,
                             name: form.name.value,
@@ -119,23 +119,28 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
                             lat = Math.round(loc.$a*1000000)/1000000,
                             lon = Math.round(loc.ab*1000000)/1000000;
                             $('input#geoencode').val(res.formatted_address);
-                            $('hidden[name=pos]').val(lon + ',' + lat);
+                            $('input[name=pos]').val(lon + ',' + lat);
+                            $('input#geoencode').attr('placeholder', '');
                         } else {
                         }
                     });
                 } else {
                     var gps = getCurrentPosition();
-                    $('hidden[name=pos]').val(gps.lon + ',' + gps.lat);
+                    $('input[name=pos]').val(gps.lon + ',' + gps.lat);
                     $('input#geoencode').attr('placeholder', '[Current location]');
                 }
+                $('#btnUseCurrentGPS').val('Clear');
+                $('#btnUseCurrentGPS').buttonMarkup({ theme: 'c' }).button('refresh');
                 return false;
             },
             
-            geoencode_keydownHandler: function(event) {
+            geoencode_keyupHandler: function(event) {
                 if($(event.target).val().length >= 1) {
-                    $('#btnUseCurrentGPS .ui-btn-text').text('Search');
+                    $('#btnUseCurrentGPS').val('Search');
+                    $('#btnUseCurrentGPS').buttonMarkup({ theme: 'e' }).button('refresh');
                 } else {
-                    $('#btnUseCurrentGPS .ui-btn-text').text('Current Position');
+                    $('#btnUseCurrentGPS').val('Current Position');
+                    $('#btnUseCurrentGPS').buttonMarkup({ theme: 'c' }).button('refresh');
                 }
             }
         });

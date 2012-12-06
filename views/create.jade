@@ -25,9 +25,9 @@ div(data-role="content")
         input#endtime(type="time", name="endtime", value!='<%= endtime %>')
 
         label(for="pos") Position
-        hidden#pos(name="pos", value!='<%= pos %>')
+        input#pos(type="hidden", name="pos", value!='<%= pos %>')
         input#geoencode(name="geoencode")
-        #btnUseCurrentGPS(data-role='button') Use current position
+        input#btnUseCurrentGPS(type='button', value="Use current position")
 
         <% if(isNew) { %>
         input(type='submit', value='Create', data-icon='add')
