@@ -109,9 +109,16 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
             },
             
             btnUseCurrentGPS_clickHandler: function(event) {
-                if($('#geoencode').val().length >= 1) {
+                if($('#btnUseCurrentGPS').val() === 'Clear') {
+                    $('input[name=pos]').val('')
+                    $('input#geoencode').val('');
+                    $('input#geoencode').attr('placeholder', '');
+                    $('#btnUseCurrentGPS').val('Current Position');
+                    $('#btnUseCurrentGPS').buttonMarkup({ theme: 'c' }).button('refresh');
+                } else if($('#geoencode').val().length >= 1) {
                     var gc = new google.maps.Geocoder(),
-                    opts = { 'address' : $('#geoencode').val() };
+                    opts = { 'address' : $('#geoencode').val() },
+                    self = this;
                     gc.geocode(opts, function (results, status) {
                         if (status == google.maps.GeocoderStatus.OK) {
                             var res = results[0];
@@ -120,7 +127,10 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
                             lon = Math.round(loc.ab*1000000)/1000000;
                             $('input#geoencode').val(res.formatted_address);
                             $('input[name=pos]').val(lon + ',' + lat);
+                            self.showMap({lat: lat, lon: lon});
                             $('input#geoencode').attr('placeholder', '');
+                            $('#btnUseCurrentGPS').val('Clear');
+                            $('#btnUseCurrentGPS').buttonMarkup({ theme: 'c' }).button('refresh');
                         } else {
                         }
                     });
@@ -128,10 +138,33 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
                     var gps = getCurrentPosition();
                     $('input[name=pos]').val(gps.lon + ',' + gps.lat);
                     $('input#geoencode').attr('placeholder', '[Current location]');
+                    this.showMap(gps);
                 }
-                $('#btnUseCurrentGPS').val('Clear');
-                $('#btnUseCurrentGPS').buttonMarkup({ theme: 'c' }).button('refresh');
                 return false;
+            },
+            
+            showMap: function(pos) {
+                var gps = getCurrentPosition();
+                var latlng = new google.maps.LatLng(gps.lat, gps.lon);
+                var options = {
+                    zoom : 15,
+                    center : latlng,
+                    mapTypeId : google.maps.MapTypeId.ROADMAP
+                };
+                var $content = $("#gmap");
+                $content.height ($(window).width() - 50);
+                var map = new google.maps.Map($content[0], options);
+                var dest = new google.maps.Marker ({
+                    map : map,
+                    animation : google.maps.Animation.DROP,
+                    position : new google.maps.LatLng(parseFloat(pos.lat), parseFloat(pos.lon))
+                });
+                var curr = new google.maps.Marker ({
+                    map : map,
+                    animation : google.maps.Animation.DROP,
+                    position : latlng
+                });
+                map.fitBounds(map.getBounds().extend(dest.getPosition()));
             },
             
             geoencode_keyupHandler: function(event) {

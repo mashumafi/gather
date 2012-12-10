@@ -107,7 +107,7 @@ require(['domReady', 'views/login', 'views/home', 'jqm', 'jqv', 'D8'],
                 }
             }
 
-            if (navigator.userAgent.match(/(iPad|iPhone|Android)/)) {
+            if (navigator.userAgent.match(/(iPad|iPhone|Android)/) && false) {
                 // This is running on a device so waiting for deviceready event
                 document.addEventListener('deviceready', onDeviceReady, false);
             } else {
