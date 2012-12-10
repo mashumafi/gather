@@ -18,6 +18,9 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
                     this.options.pos = '';
                 }
                 this.$el.html(_.template(CreateTPL, this.options));
+                if(!this.options.isNew) {
+                    this.showMap(this.options);
+                }
                 $("#frmActivityCreate").validate({
             		rules: {
             			name: {
@@ -161,6 +164,7 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
                 });
                 var curr = new google.maps.Marker ({
                     map : map,
+                    icon: new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + 'FF0000'),
                     animation : google.maps.Animation.DROP,
                     position : latlng
                 });
