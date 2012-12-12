@@ -49,6 +49,9 @@ require(['domReady', 'views/login', 'views/home', 'jqm', 'jqv', 'D8'],
                 var res = str.match(isgps);
                 return {lon:parseFloat(res[1]),lat:parseFloat(res[2])};
             };
+            Math.distance = function(a, b) {
+                return Math.sqrt(Math.pow(a.lon - b.lon, 2) + Math.pow(a.lat - b.lat, 2));
+            };
             navigator.geolocation.getCurrentPosition(function (pos)
             {
                 gps.lat = Math.round(pos.coords.latitude*1000000)/1000000;

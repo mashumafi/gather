@@ -19,7 +19,7 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
                 }
                 this.$el.html(_.template(CreateTPL, this.options));
                 if(!this.options.isNew) {
-                    this.showMap(this.options);
+                    //this.showMap(this.options);
                 }
                 $("#frmActivityCreate").validate({
             		rules: {
@@ -126,11 +126,11 @@ define(['underscore', 'Backbone', 'text!/create.tpl'],
                         if (status == google.maps.GeocoderStatus.OK) {
                             var res = results[0];
                             var loc = results[0].geometry.location,
-                            lat = Math.round(loc.$a*1000000)/1000000,
-                            lon = Math.round(loc.ab*1000000)/1000000;
+                            lat = Math.round(loc.lat()*1000000)/1000000,
+                            lon = Math.round(loc.lng()*1000000)/1000000;
                             $('input#geoencode').val(res.formatted_address);
                             $('input[name=pos]').val(lon + ',' + lat);
-                            self.showMap({lat: lat, lon: lon});
+                            //self.showMap({lat: lat, lon: lon});
                             $('input#geoencode').attr('placeholder', '');
                             $('#btnUseCurrentGPS').val('Clear');
                             $('#btnUseCurrentGPS').buttonMarkup({ theme: 'c' }).button('refresh');

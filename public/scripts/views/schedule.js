@@ -28,7 +28,7 @@ define(['underscore', 'Backbone', 'text!/schedule.tpl', 'views/details'],
                         activity.began = false;
                         activity.begin = 'Begins: ' + begin.timespan(now);
                     }
-                    activity.distance = activity.pos;
+                    activity.distance = Math.distance(getCurrentPosition(), activity.pos);
                     if(end > now) {
                         (activity.owner ? owner : member).push(activity);
                     } else {
